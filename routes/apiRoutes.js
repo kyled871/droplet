@@ -3,7 +3,7 @@ const db = require("../models");
 
 module.exports = (app) => {
   
-  //fetches all post from a specific user
+  //fetches all post from a specific user or all posts if user not specified
   app.get("/api/posts/:user?", (req, res) => {
 
     if(req.params.user){
@@ -101,10 +101,11 @@ module.exports = (app) => {
   });
 
   // fetches all comments from a particular post
-  app.get("/api/comments/:user/:post", (req, res) => {
+  app.get("/api/comments/:post", (req, res) => {
     db.comments.findAll({
       where: {
-        user_id: req.params.user,
+        // removed user id as search criteria so I could load all comments per post CL 
+        // user_id: req.params.user,
         post_id: req.params.post,
       },
     })

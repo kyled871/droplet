@@ -4,6 +4,7 @@ $( document ).ready(function() {
     // global variables
     const postsContainer = $('#posts')
     let posts;
+    let comments;
 
     // get the post data from the posts table of the droplet database
     function getPosts(){
@@ -13,6 +14,15 @@ $( document ).ready(function() {
                 emptyDisplay();
             } else {
                 initializeRows();
+            }
+        })
+    }
+
+    function getComments(post){ // post refers to post_id from the comments table
+        $.get('/api/comments/post', function(data){
+            comments = data;
+            if(comments || comments.length){
+                initializeComments();
             }
         })
     }
@@ -37,6 +47,14 @@ $( document ).ready(function() {
             allPosts.push(createNewRow(posts[i]));
         }
         postsContainer.append(allPosts)
+    }
+
+    function initializeComments(){
+        let allComments = [];
+        for (let i = 0; i < comments.length; i++){
+            allComments.push(comments[i])
+        }
+        newDropletFooter.append(allComments)
     }
 
     // create the rows to populate postsContainer
@@ -68,6 +86,9 @@ $( document ).ready(function() {
         
         // bootstrap classes go here to style the bottom section of the droplet
         newDropletFooter.addClass('');
+
+        // gets comments and adds them to newDropletFooter
+        getComments(post.post_id)
         
         // only the user can edit the post
         let editBtn = $('<button>');
@@ -84,8 +105,12 @@ $( document ).ready(function() {
         // display time and date somewhere in small text
         let newDropletDateTime = $('<small>');
 
+        // gets date/time from post data
         let createdDate = new Date(post.date_time);
+
+        // format createdDate with moment
         // createdDate = moment(createdDate).format("MMMM Do YYYY, h:mm:ss a");
+
 
         newDropletDateTime.text(createdDate);
 
