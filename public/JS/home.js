@@ -33,14 +33,14 @@ $( document ).ready(function() {
     function initializeRows(){
         postsContainer.empty();
         let allPosts = [];
-        for (let i = 0; i < ponselectstart.length; i++){
+        for (let i = 0; i < posts.length; i++){
             allPosts.push(createNewRow(posts[i]));
         }
         postsContainer.append(allPosts)
     }
 
     // create the rows to populate postsContainer
-    function createRow(post){
+    function createNewRow(post){
         
         // div contains the whole post droplet
         let newPostDroplet = $('<div>');
@@ -96,7 +96,5 @@ $( document ).ready(function() {
         newPostDroplet.data('post', post);
         return newPostDroplet;
     }
-
-
 
 });

@@ -32,7 +32,7 @@ module.exports = (app) => {
 
   //creates a new post in the database
   app.post("/api/post", (req, res) => {
-    db.Posts.create({
+    db.posts.create({
       user_id: req.body.user_id,
       post_content: req.body.post_content,
     })
@@ -46,7 +46,7 @@ module.exports = (app) => {
 
   //updates a specific post
   app.put("/api/post/:id", (req, res) => {
-    db.Posts.update(
+    db.posts.update(
       {
         post_content: req.body.post_content,
       },
@@ -66,7 +66,7 @@ module.exports = (app) => {
 
   //creates a vote in the database
   app.post("/api/vote", (req, res) => {
-    db.Votes.create({
+    db.votes.create({
       user_id: req.body.user_id,
       post_id: req.body.post_id,
       vote: req.body.vote,
@@ -81,7 +81,7 @@ module.exports = (app) => {
 
   //updates specific vote
   app.put("/api/vote/:id", (req, res) => {
-    db.Votes.update(
+    db.votes.update(
       {
         vote: req.body.vote,
       },
@@ -102,7 +102,7 @@ module.exports = (app) => {
 
   // fetches all comments from a particular post
   app.get("/api/comments/:user/:post", (req, res) => {
-    db.Comments.findAll({
+    db.comments.findAll({
       where: {
         user_id: req.params.user,
         post_id: req.params.post,
@@ -118,7 +118,7 @@ module.exports = (app) => {
 
   //creates a comment in the database
   app.post("/api/comment/", (req, res) => {
-    db.Comments.create({
+    db.comments.create({
       user_id: req.body.user_id,
       post_id: req.body.post_id,
       comment_content: req.body.comment_content,
@@ -154,7 +154,7 @@ module.exports = (app) => {
 
   // searches db to match 2 queries username & password --------
   app.get("/api/login/", (req, res) => {
-    db.Users.findOne({
+    db.users.findOne({
       limit: 1,
       where: {
         user_name: req.params.user_name,

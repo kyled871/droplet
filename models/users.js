@@ -37,7 +37,10 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 len: [2, 20],
             },
-            unique: true
+            unique: {
+                args: true,
+                msg: "That username is already taken!"
+            }
         },
 
 
