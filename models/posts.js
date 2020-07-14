@@ -8,6 +8,13 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false
       },
+
+      post_id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        allowNull: false
+      },
+
       post_content: {
         type: DataTypes.TEXT,
       },
@@ -19,5 +26,20 @@ module.exports = function(sequelize, DataTypes) {
       freezeTableName: true
   
     })
+
+    Posts.associate = function(models) {
+
+      Posts.hasMany(models.comments, {
+        foreignKey: {
+          allowNull: false
+        }
+      });
+
+      Posts.belongsTo(models.users, {
+        foreignKey: {
+          allowNull: false
+        }
+      })
+    }
     return Posts
 };

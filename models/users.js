@@ -6,9 +6,11 @@ module.exports = function(sequelize, DataTypes) {
     const Users = sequelize.define('users', {
 
         user_id: {
+        
             allowNull: false,
             primaryKey: true,
-            type: DataTypes.UUID
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
         },
 
         user_firstName: {
@@ -34,12 +36,26 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 len: [2, 20],
-                unique: true
+            },
+            unique: true
+        },
+
+
+        user_email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                isEmail: true,
+            },
+            unique: {
+                args: true,
+                msg: "Email is already in use!"
             }
+
         },
 
         user_birthday: {
-            type:  DataTypes.DATEONLY,
+            type:  DataTypes.DATE,
             allowNull: false,
             validate: {
                 isDate: true
@@ -58,7 +74,7 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 // must have at least 6 characters no more than 16
                 // must have capital and numbers
-                is: /^(?=.*\d)(?=.*[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{8,16})$/
+                is: /^(?=.*\d)(?=.*[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{6,16})$/
                 // must not be ['password', 'username', etc...]
             }
         }
@@ -75,22 +91,27 @@ module.exports = function(sequelize, DataTypes) {
     //           return bcrypt.compare(user_password, this.user_password)
     //       }
     //   },
-      hooks: {
-          beforeCreate: function(user) {
+    //   hooks: {
+    //       beforeCreate: function(user) {
 
-            user.user_firstName.toLowerCase().replace(/\b[a-z]/g, function(txtVal) {
-                return txtVal.toUpperCase();
-            });
+    //         user.user_firstName.toLowerCase().replace(/\b[a-z]/g, function(txtVal) {
+    //             return txtVal.toUpperCase();
+    //         });
 
-            user.user_lastName.toLowerCase().replace(/\b[a-z]/g, function(txtVal) {
-                return txtVal.toUpperCase();
-            });
-            return user
-          }
+    //         user.user_lastName.toLowerCase().replace(/\b[a-z]/g, function(txtVal) {
+    //             return txtVal.toUpperCase();
+    //         });
+    //         return user
+    //       }
           
-    }
+    // }
     
   
     })
+    
+    Users.associate = function(models) {
+        Users.hasMany(models.comments)
+        Users.hasMany(models.posts)
+    }
     return Users
 };

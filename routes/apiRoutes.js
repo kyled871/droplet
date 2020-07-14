@@ -1,9 +1,13 @@
-const db = requires("../models");
+const db = require("../models");
+
 
 module.exports = (app) => {
+  
   //fetches all post from a specific user
-  app.get("/api/posts/:user", (req, res) => {
-    db.Posts.findAll({
+  app.get("/api/posts/:user?", (req, res) => {
+
+    if(req.params.user){
+       db.posts.findAll({
       where: {
         user_id: req.params.user,
       },
@@ -14,6 +18,16 @@ module.exports = (app) => {
       .catch(function (err) {
         res.json(err);
       });
+    }else{
+      db.posts.findAll()
+        .then((posts) => {
+          res.json(posts);
+        })
+        .catch(function (err) {
+          res.json(err);
+        });
+    }
+   
   });
 
   //creates a new post in the database
@@ -116,4 +130,45 @@ module.exports = (app) => {
         res.json(err);
       });
   });
+
+  // creates user information into db -----------
+  app.post("/api/signup/", (req, res) => {
+    db.users.create({
+
+      user_firstName: req.body.user_firstName,
+      user_lastName: req.body.user_lastName,
+      user_name: req.body.user_name,
+      user_email: req.body.user_email,
+      user_birthday: req.body.user_birthday,
+      user_bio: req.body.user_bio,
+      user_password: req.body.user_password,
+
+    })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(function (err) {
+      res.json(err);
+    })
+  });
+
+  // searches db to match 2 queries username & password --------
+  app.get("/api/login/", (req, res) => {
+    db.Users.findOne({
+      limit: 1,
+      where: {
+        user_name: req.params.user_name,
+        user_password: req.params.user_password
+      }
+
+    })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(function (err) {
+      res.json(err);
+    })
+  })
+
+
 };

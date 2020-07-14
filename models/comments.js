@@ -4,9 +4,13 @@ module.exports = function(sequelize, DataTypes) {
     // This model needs a title, a body, and a category
     // Don't forget to 'return' the post after defining
     const Comments= sequelize.define('comments', {
-      user_id: {
-        type: DataTypes.STRING,
+      comment_id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
         allowNull: false
+      },
+      user_id: {
+        type: DataTypes.UUID,
       },
       post_id: {
         type:  DataTypes.INTEGER
@@ -23,5 +27,14 @@ module.exports = function(sequelize, DataTypes) {
       freezeTableName: true
   
     })
+
+    Comments.associate = function(models) {
+      Comments.belongsTo(models.posts, {
+        foreignKey: {
+          allowNull: false
+        }
+      })
+    };
+
     return Comments
 };
