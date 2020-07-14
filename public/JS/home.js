@@ -18,14 +18,7 @@ $( document ).ready(function() {
         })
     }
 
-    function getComments(post){ // post refers to post_id from the comments table
-        $.get('/api/comments/post', function(data){
-            comments = data;
-            if(comments || comments.length){
-                initializeComments();
-            }
-        })
-    }
+    
 
     // if there are no posts, message to user displays
     function emptyDisplay(){
@@ -49,12 +42,18 @@ $( document ).ready(function() {
         postsContainer.append(allPosts)
     }
 
-    function initializeComments(){
-        let allComments = [];
-        for (let i = 0; i < comments.length; i++){
-            allComments.push(comments[i])
-        }
-        newDropletFooter.append(allComments)
+    function getComments(postId){ // post refers to post_id from the comments table
+        $.get('/api/comments/' + postId, function(data){
+
+            comments = data;
+            let allComments = [];
+
+            for (let i = 0; i < comments.length; i++){
+                allComments.push(comments[i])
+            }
+            console.log(allComments) 
+            return allComments
+        })
     }
 
     // create the rows to populate postsContainer
@@ -88,8 +87,8 @@ $( document ).ready(function() {
         newDropletFooter.addClass('');
 
         // gets comments and adds them to newDropletFooter
-        getComments(post.post_id)
-        
+        getComments(post.id)
+
         // only the user can edit the post
         let editBtn = $('<button>');
 
