@@ -5,6 +5,8 @@ $( document ).ready(function() {
     const postsContainer = $('#posts')
     let posts;
     let comments;
+    let allComments = [];
+
 
     // get the post data from the posts table of the droplet database
     function getPosts(){
@@ -43,15 +45,15 @@ $( document ).ready(function() {
     }
 
     function getComments(postId){ // post refers to post_id from the comments table
+        
         $.get('/api/comments/' + postId, function(data){
 
             comments = data;
-            let allComments = [];
 
             for (let i = 0; i < comments.length; i++){
                 allComments.push(comments[i])
             }
-            console.log(allComments) 
+            console.log(allComments[0]) 
             return allComments
         })
     }
@@ -88,6 +90,10 @@ $( document ).ready(function() {
 
         // gets comments and adds them to newDropletFooter
         getComments(post.id)
+
+        console.log(allComments[0])
+
+        newDropletBody.text(allComments)
 
         // only the user can edit the post
         let editBtn = $('<button>');
