@@ -4,12 +4,19 @@ $( document ).ready(function() {
     // global variables
     const postsContainer = $('#posts')
     let posts;
-    let comments;
     let userName;
     let allComments = [];
 
+    $('#postModalSubmit').click(function(){
+        let userId = $('#postModal').attr('data-user_id')
+        console.log(userId)
+        $.post('api/post/' + userId,{post_content: $('#postModalBody').val()}, function(data){
+            console.log(data)
+        })
+    })
+
     $(document).on('click', 'button.edit', editPost);
-    $(document).click('#editPostModalSubmit', function(){
+    $('#editPostModalSubmit').click(function(){
         let id = $(this).attr('data-id')
         console.log($('#editPostModal').attr('data-id'))
         //if(localStorage.getItem('user_id')){
@@ -30,6 +37,7 @@ $( document ).ready(function() {
             })
         //}
     })
+
 
     // get the post data from the posts table of the droplet database
     function getPosts(){
@@ -172,6 +180,12 @@ $( document ).ready(function() {
         $('#editPostModal').modal('show')
     }
 
+    $('#createPostButton').on('click', createPost)
+    function createPost(){
+        let id = '43cd3286-dbd6-4c3a-a3ce-bba6f227beee' // localStorage.getItem('user_id')
+        $('#postModal').attr('data-user_id', id)
+        $('#postModal').modal('show')
+    }
 
 
     // Store user data to localstorage, needs to happen on login

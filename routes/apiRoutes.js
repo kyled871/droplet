@@ -31,9 +31,9 @@ module.exports = (app) => {
   });
 
   //creates a new post in the database
-  app.post("/api/post", (req, res) => {
+  app.post("/api/post/:id", (req, res) => {
     db.posts.create({
-      user_id: req.body.user_id,
+      user_id: req.params.id,
       post_content: req.body.post_content,
     })
       .then((post) => {
