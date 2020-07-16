@@ -10,7 +10,7 @@ $( document ).ready(function() {
     $('#postModalSubmit').click(function(){
         let userId = $('#postModal').attr('data-user_id')
         console.log(userId)
-        $.post('api/post/' + userId,{post_content: $('#postModalBody').val()}, function(data){
+        $.post('api/post/' + userId, {post_content: $('#postModalBody').val()}, function(data){
             console.log(data)
         })
     })
@@ -76,7 +76,6 @@ $( document ).ready(function() {
     // Retrieve user_name from database related to user_id specified
     function getUserName(userId){
         return $.get('api/user/' + userId, function(data){
-            console.log(data)
             userName = data.user_name;
             return userName;
         })
@@ -183,7 +182,7 @@ $( document ).ready(function() {
 
     $('#createPostButton').on('click', createPost)
     function createPost(){
-        let id = '43cd3286-dbd6-4c3a-a3ce-bba6f227beee' // localStorage.getItem('user_id')
+        let id = '938a7d08-3c76-48d9-9b8b-f1fb6015f8dc' // localStorage.getItem('user_id')
         $('#postModal').attr('data-user_id', id)
         $('#postModal').modal('show')
     }
