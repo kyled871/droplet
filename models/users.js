@@ -112,9 +112,9 @@ module.exports = function(sequelize, DataTypes) {
   
     })
     
-    Users.associate = function(models) {
-        Users.hasMany(models.comments)
-        Users.hasMany(models.posts)
-    }
+    // Users.associate = function(models) {
+    //     Users.hasMany(models.comments, {foreignKey: "comment_id"})
+    //     Users.hasMany(models.posts,  {foreignKey: "post_id"})
+    // }
     return Users
 };

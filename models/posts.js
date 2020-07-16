@@ -5,14 +5,14 @@ module.exports = function(sequelize, DataTypes) {
     // Don't forget to 'return' the post after defining
     const Posts= sequelize.define('posts', {
       user_id: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.UUID
       },
 
       post_id: {
         type: DataTypes.UUID,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        defaultValue: DataTypes.UUIDV4
       },
 
       post_content: {
@@ -27,19 +27,15 @@ module.exports = function(sequelize, DataTypes) {
   
     })
 
-    Posts.associate = function(models) {
+    // Posts.associate = function(models) {
 
-      Posts.hasMany(models.comments, {
-        foreignKey: {
-          allowNull: false
-        }
-      });
+    //   Posts.hasMany(models.comments, {
+    //     foreignKey: "comment_id"
+    //   });
 
-      Posts.belongsTo(models.users, {
-        foreignKey: {
-          allowNull: false
-        }
-      })
-    }
+    //   Posts.belongsTo(models.users, {
+    //     foreignKey: "user_id"
+    //   })
+    // }
     return Posts
 };

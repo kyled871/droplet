@@ -7,13 +7,14 @@ module.exports = function(sequelize, DataTypes) {
       comment_id: {
         type: DataTypes.UUID,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        defaultValue: DataTypes.UUIDV4
       },
       user_id: {
         type: DataTypes.UUID,
       },
       post_id: {
-        type:  DataTypes.INTEGER
+        type:  DataTypes.UUID,
       },
       comment_content: {
         type:  DataTypes.TEXT
@@ -28,13 +29,11 @@ module.exports = function(sequelize, DataTypes) {
   
     })
 
-    Comments.associate = function(models) {
-      Comments.belongsTo(models.posts, {
-        foreignKey: {
-          allowNull: false
-        }
-      })
-    };
+    // Comments.associate = function(models) {
+    //   Comments.belongsTo(models.posts, {
+    //     foreignKey: "post_id"
+    //   })
+    // };
 
     return Comments
 };

@@ -16,7 +16,7 @@ module.exports = (app) => {
         res.json(posts);
       })
       .catch(function (err) {
-        res.json(err);
+        res.send(err); 
       });
     }else{
       db.posts.findAll()
@@ -24,7 +24,7 @@ module.exports = (app) => {
           res.json(posts);
         })
         .catch(function (err) {
-          res.json(err);
+          res.send(err);
         });
     }
    
@@ -40,7 +40,7 @@ module.exports = (app) => {
         res.json(post);
       })
       .catch(function (err) {
-        res.json(err);
+        res.send(err);
       });
   });
 
@@ -52,15 +52,15 @@ module.exports = (app) => {
       },
       {
         where: {
-          id: req.params.id,
+          post_id: req.params.id,
         },
       }
     )
       .then((post) => {
-        res.send(post);
+        res.status(200).end()
       })
       .catch(function (err) {
-        res.json(err);
+        res.send(err);
       });
   });
 
@@ -75,7 +75,7 @@ module.exports = (app) => {
         res.json(vote);
       })
       .catch(function (err) {
-        res.json(err);
+        res.send(err);
       });
   });
 
@@ -96,7 +96,7 @@ module.exports = (app) => {
         res.json(vote);
       })
       .catch(function (err) {
-        res.json(err);
+        res.send(err);
       });
   });
 
@@ -113,7 +113,7 @@ module.exports = (app) => {
         res.json(comments);
       })
       .catch(function (err) {
-        res.json(err);
+        res.send(err);
       });
   });
 
@@ -128,9 +128,23 @@ module.exports = (app) => {
         res.json(comment);
       })
       .catch(function (err) {
-        res.json(err);
+        res.send(err);
       });
   });
+
+  app.put("/api/comment/:id", (req,res) => {
+    db.comments.update({
+      comment_content: req.body.comment_content
+    },{
+      where: {
+        comment_id: req.params.id
+      }
+    }).then((comment) => {
+      res.status(200).end()
+    }).catch(function (err) {
+      res.send(err);
+    });
+  })
 
   // creates user information into db -----------
   app.post("/api/signup/", (req, res) => {
@@ -149,17 +163,17 @@ module.exports = (app) => {
       res.json(result);
     })
     .catch(function (err) {
-      res.json(err);
+      res.send(err);
     })
   });
 
   // searches db to match 2 queries username & password --------
-  app.get("/api/login/", (req, res) => {
+  app.post("/api/login/", (req, res) => {
+    console.log(req.body)
     db.users.findOne({
-      limit: 1,
       where: {
-        user_name: req.params.user_name,
-        user_password: req.params.user_password
+        user_name: req.body.user_name,
+        user_password: req.body.user_password
       }
 
     })
@@ -167,9 +181,50 @@ module.exports = (app) => {
       res.json(result);
     })
     .catch(function (err) {
-      res.json(err);
+      res.send(err);
     })
   })
 
+  // views selected user_profile by id
+  app.get("/api/user/:id", (req, res) => {
+    db.users.findOne({
+      limit: 1,
+      where: {
+        user_id: req.params.id
+      }
+    })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(function (err) {
+      res.send(err);
+    })
+  })
+
+  // edit user profile info
+  app.put("/api/user/:id", (req, res) => {
+
+      db.users.update({
+  
+        user_firstName: req.body.user_firstName,
+        user_lastName: req.body.user_lastName,
+        user_name: req.body.user_name,
+        user_email: req.body.user_email,
+        user_birthday: req.body.user_birthday,
+        user_bio: req.body.user_bio,
+        user_password: req.body.user_password,
+  
+      }, {where: {
+        user_id: req.params.id
+        }
+      })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch(function (err) {
+        res.send(err);
+      })
+
+  })
 
 };

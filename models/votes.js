@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
     // Add code here to create a Post model
     // This model needs a title, a body, and a category
     // Don't forget to 'return' the post after defining
-    const Posts= sequelize.define('posts', {
+    const Votes= sequelize.define('votes', {
       user_id: {
         type: DataTypes.STRING,
         allowNull: false
@@ -20,5 +20,5 @@ module.exports = function(sequelize, DataTypes) {
       freezeTableName: true
   
     })
-    return Posts
+    return Votes
 };
