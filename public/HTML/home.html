@@ -46,17 +46,116 @@
 
       <!-- Taskbar -->
       <div class="col-3">
-
-
+        <!-- Taskbar content goes here -->
       </div>
 
       <!-- Posts -->
-      <div class="col-6">
+      <div class="col-6" id="postsCol">
           <div id="posts">
               <!-- Each post will be appended here using jQuery from home.js -->
           </div>
-      </div>
+      </div> <!-- Closes #postsCol -->
 
+      <!-- Create Post, Login/signout buttons go here-->
+      <div class="col-3" id="buttonsCol">
+
+        <!-- contains create post button -->
+        <div class="create-post-button-container">
+          <!-- Button triggers Post Modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#postModal">
+            Create Post
+          </button>
+        </div>
+
+        <!-- container to hold login or signout button dynamically added with jquery -->
+        <div class="login-signout-button-container">
+          <!-- login or signout button appears here from jQuery -->
+        </div>
+      
+      </div> <!-- Closes #buttonsCol -->
+
+        
+        <!-- Post Modal Start -->
+        <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModaltitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+        
+            <div class="modal-content">
+        
+              <!-- Got rid of gray lining, moved Create YourPost Here down -->
+              <div class="modal-header text-center" style= "border: none; margin-top: 20px;">
+                <h5 class="modal-title w-100" id="postModaltitle">Create Your Post Here!</h5>
+                
+                <!-- Taking the padding off of the "X" button to exit modal, lined it up with Create Your Post -->
+                <button style= "padding: 0 0 0 10px; margin-top: 1px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+        
+              <!-- Content for post-->
+              <div class="modal-body" style= "border-radius: 100%; width: 500px; height: 100px;">
+        
+                <form>
+                  
+                  <textarea style= "resize: none; margin-top: 70px; border-radius: 15%;" class="form-control" rows="5" id="postModalBody"></textarea>
+                  <div class="form-group">
+                    <label style= "margin: 0 0 5px 175px;" for="postModalImage">Upload an image:</label>
+                    <input style= "margin: 0 0 5px 140px;" type="file" class="form-control-file" id="postModalImage">
+                  </div>
+                  
+                </form>
+        
+              </div>
+        
+              <div class="modal-footer" style= "border: none; width: 60%; margin-bottom: 30px;">
+                <button style= "width: 100%" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button style= "width: 100%" type="button" class="btn btn-primary" id="postModalSubmitButton">Post</button>
+              </div>
+                                
+            </div>
+          </div>
+        </div>
+        <!-- Post Modal End -->
+
+        <!-- Edit Modal Begin -->
+        
+        <div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editPostModalTitle">Post Editor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <!-- <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Recipient:</label>
+                    <input type="text" class="form-control" id="recipient-name">
+                  </div> -->
+                  <div class="form-group">
+                    <label for="message-text" class="col-form-label">Edit your post:</label>
+                    <textarea class="form-control" id="editPostModalBody"></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editPostModalSubmit">Edit Post</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Edit Modal End -->
+        
+
+    </div> <!-- Closes .row -->
+  </div> <!-- Closes .container -->
+
+</body>
+</html>
+
+<!-- Extra suff if we have time -->
       <!-- Post button spot for now 
       Later if we have time make it so we can click over here to generate
       certain types of posts-->
@@ -88,57 +187,4 @@
                 Memes href to load meme posts etc
                 Pets
                 Politics-->
-      <div class="col-3">
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#postModal">
-            Create Post
-        </button>
-        
-        <!-- Modal -->
-        <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModaltitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-        
-            <div class="modal-content">
-        
-              <!-- Got rid of gray lining, moved Create YourPost Here down -->
-              <div class="modal-header text-center" style= "border: none; margin-top: 20px;">
-                <h5 class="modal-title w-100" id="postModaltitle">Create Your Post Here!</h5>
-                <!-- Taking the padding off of the "X" button to exit modal, lined it up with Create Your Post -->
-                <button style= "padding: 0 0 0 10px; margin-top: 1px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-        
-              <!-- Content for post-->
-              <div class="modal-body" style= "border-radius: 100%; width: 500px; height: 100px;">
-        
-                <form>
-        
-                  <textarea style= "resize: none; margin-top: 70px; border-radius: 15%;" class="form-control" rows="5" id="postModalBody"></textarea>
-                  <div class="form-group">
-                    <label style= "margin: 0 0 5px 175px;" for="postModalImage">Upload an image:</label>
-                    <input style= "margin: 0 0 5px 140px;" type="file" class="form-control-file" id="postModalImage">
-                  </div>
-        
-                </form>
-        
-              </div>
-        
-              <div class="modal-footer" style= "border: none; width: 60%; margin-bottom: 30px;">
-                <button style= "width: 100%" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button style= "width: 100%" type="button" class="btn btn-primary" id="postModalSubmitButton">Post</button>
-              </div>
-                                
-            </div>
-          </div>
-        </div>
-        
-    </div>
-  </div>
-</div>
-
-
-
-</body>
-</html>
+<!-- End extra stuff if we have time -->

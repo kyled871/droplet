@@ -8,21 +8,28 @@ $( document ).ready(function() {
     let userName;
     let allComments = [];
 
-    $(document).on("click", "button.edit", editPost);
-
-    $('#postModalSubmitButton').click(function(){
-        if(localStorage.getItem('user_id')){
+    $(document).on('click', 'button.edit', editPost);
+    $(document).click('#editPostModalSubmit', function(){
+        let id = $(this).attr('data-id')
+        console.log($('#editPostModal').attr('data-id'))
+        //if(localStorage.getItem('user_id')){
             let newPost = {
                 user_id: "23fb7c7b-1e4d-48fd-95fc-ab7ffc345baa",
                 // localStorage.getItem('user_id'),
-                post_content: $('#postModalBody').val().trim(),
+                post_content: $('#editPostModalBody').val().trim(),
             }
+            console.log(newPost)
             // let modalImage = $('#')
-            $.post('/api/post', newPost)
-        }
-        
+            $.ajax({
+                url: '/api/post/' + $('#editPostModal').attr('data-id'),
+                type: 'PUT',
+                data: newPost,
+                success: function(result) {
+                    console.log(result)
+                }
+            })
+        //}
     })
-
 
     // get the post data from the posts table of the droplet database
     function getPosts(){
@@ -58,6 +65,7 @@ $( document ).ready(function() {
         postsContainer.append(allPosts)
     }
 
+    // Retrieve user_name from database related to user_id specified
     function getUserName(userId){
         return $.get('api/user/' + userId, function(data){
             userName = data.user_name;
@@ -65,8 +73,9 @@ $( document ).ready(function() {
         })
     }
 
-    function getComments(postId){ // post refers to post_id from the comments table
-        
+    // Retrieve comments from database related to single post_id specified
+    function getComments(postId){ 
+
         return $.get('/api/comments/' + postId, function(data){
 
             for (let i = 0; i < data.length; i++){
@@ -110,7 +119,7 @@ $( document ).ready(function() {
         getComments(post.post_id).then(function(data){
             let commentArr =  [];
             for (let i = 0; i < data.length; i++){
-                newDropletFooter.prepend(data[i].comment_content + '<br>')
+                newDropletFooter.append(data[i].comment_content + '<br>')
             }
 
             // only the user can edit the post
@@ -121,6 +130,7 @@ $( document ).ready(function() {
 
             // store the post id to the edit button
             editBtn.attr('data-id', post.post_id);
+            editBtn.attr('data-body', post.post_content)
 
             // bootstrap classes 
             editBtn.addClass('edit btn btn-info');
@@ -134,10 +144,11 @@ $( document ).ready(function() {
             // format createdDate with moment
             // createdDate = moment(createdDate).format("MMMM Do YYYY, h:mm:ss a");
 
-
             newDropletDateTime.text(createdDate);
+
             getUserName(post.user_id).then(function(userData){
-                console.log(userData.user_name)
+
+                // append all data to positions within the newly created row
                 newDropletHeader.append(userData.user_name);
                 newDropletHeader.append(editBtn);
                 newPostDroplet.append(newDropletHeader);
@@ -154,10 +165,16 @@ $( document ).ready(function() {
 
     function editPost(){
         let id = $(this).attr('data-id')
-        $('#postModal').modal('show')
+        let body = $(this).attr('data-body')
+        $('#editPostModal').attr('data-id', id)
+        //$('#editPostModal').attr('data-body', body)
+        $('#editPostModalBody').html(body)
+        $('#editPostModal').modal('show')
     }
 
 
+
+    // Store user data to localstorage, needs to happen on login
     function storeUser(login) {
 
         $.post('/api/login', {
