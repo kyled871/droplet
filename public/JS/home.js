@@ -76,6 +76,7 @@ $( document ).ready(function() {
     // Retrieve user_name from database related to user_id specified
     function getUserName(userId){
         return $.get('api/user/' + userId, function(data){
+            console.log(data)
             userName = data.user_name;
             return userName;
         })
