@@ -23,7 +23,7 @@
 
     <title>Droplet</title>
 
-    <style>
+    <!-- <style>
         .modal-content {
           background-color: #0099FF;
           position: relative;
@@ -35,7 +35,7 @@
           align-items: center;
           max-height: 500px;
         }
-    </style>
+    </style> -->
 
 </head>
 
@@ -62,7 +62,8 @@
         <!-- contains create post button -->
         <div class="create-post-button-container">
           <!-- Button triggers Post Modal -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#postModal">
+          <!-- data-toggle="modal" data-target="#postModal" -->
+          <button type="button" class="btn btn-primary" id="createPostButton">
             Create Post
           </button>
         </div>
@@ -82,34 +83,62 @@
             <div class="modal-content">
         
               <!-- Got rid of gray lining, moved Create YourPost Here down -->
-              <div class="modal-header text-center" style= "border: none; margin-top: 20px;">
-                <h5 class="modal-title w-100" id="postModaltitle">Create Your Post Here!</h5>
+              <div class="modal-header" style= "border: none; margin-top: 20px;">
+
                 
-                <!-- Taking the padding off of the "X" button to exit modal, lined it up with Create Your Post -->
-                <button style= "padding: 0 0 0 10px; margin-top: 1px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                
+                
+                <div class="container">
+
+                  <div class="row">
+                    <div class="col-1 offset-11">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-12">
+                      <h5 class="modal-title w-100 text-center" id="postModaltitle">Create Your Post Here!</h5>
+                    </div>
+                  </div>
+                </div>
+                  
+
+              
+   
+                  
+                
               </div>
         
               <!-- Content for post-->
-              <div class="modal-body" style= "border-radius: 100%; width: 500px; height: 100px;">
-        
-                <form>
-                  
-                  <textarea style= "resize: none; margin-top: 70px; border-radius: 15%;" class="form-control" rows="5" id="postModalBody"></textarea>
+              
+              <form>
+                <div class="modal-body">
                   <div class="form-group">
-                    <label style= "margin: 0 0 5px 175px;" for="postModalImage">Upload an image:</label>
-                    <input style= "margin: 0 0 5px 140px;" type="file" class="form-control-file" id="postModalImage">
+                    <textarea style= "resize: none;" class="form-control rounded" rows="4" id="postModalBody"></textarea>
                   </div>
                   
+                  <div class="form-group" style= "border: 1px solid red;">
+                    <label for="postModalImage">Upload an image:</label>
+                    <input type="file" class="form-control-file" id="postModalImage">
+                  </div>
+                  
+                </div>
+                  <div class= "container">
+                    <div class="modal-footer row" style= "border: none;">
+                      <div class="col-xs-6">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                      </div>
+                      <div class="col-xs-6" >
+                        <button type="button" class="btn btn-primary " id="postModalSubmit">Post</button>
+                      </div>
+                    </div> <!-- close modal-footer-->
+                  </div> <!--close container-->
                 </form>
         
-              </div>
         
-              <div class="modal-footer" style= "border: none; width: 60%; margin-bottom: 30px;">
-                <button style= "width: 100%" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button style= "width: 100%" type="button" class="btn btn-primary" id="postModalSubmitButton">Post</button>
-              </div>
                                 
             </div>
           </div>
