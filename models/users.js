@@ -1,8 +1,10 @@
 module.exports = function(sequelize, DataTypes) {
 
+    const bcrypt = require('bcrypt');
     // Add code here to create a Post model
     // This model needs a title, a body, and a category
     // Don't forget to 'return' the post after defining
+
     const Users = sequelize.define('users', {
 
         user_id: {
@@ -85,31 +87,15 @@ module.exports = function(sequelize, DataTypes) {
     }, {
   
       freezeTableName: true,
-    //   instanceMethods: {
-    //       generateHash(user_password) {
-    //           return bcrypt.hash(user_password, bcrypt.genSaltSync(8));
-    //       },
-
-    //       validatePassword(user_password) {
-    //           return bcrypt.compare(user_password, this.user_password)
-    //       }
-    //   },
-    //   hooks: {
-    //       beforeCreate: function(user) {
-
-    //         user.user_firstName.toLowerCase().replace(/\b[a-z]/g, function(txtVal) {
-    //             return txtVal.toUpperCase();
-    //         });
-
-    //         user.user_lastName.toLowerCase().replace(/\b[a-z]/g, function(txtVal) {
-    //             return txtVal.toUpperCase();
-    //         });
-    //         return user
-    //       }
-          
-    // }
     
-  
+
+
+    }, {
+        hooks : {
+            beforeCreate : (users, options) => {
+                users.user_password = users.user_password && users.user_password != "" ? bcrypt.hashSync(users.user_password, 10) : "";
+            }
+        }
     })
     
     // Users.associate = function(models) {
