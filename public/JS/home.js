@@ -7,11 +7,79 @@ $( document ).ready(function() {
     let userName;
     let allComments = [];
 
+    // Log in --------------------------------------------
+
+    function renderLoginButton(){
+        $('#loginOrLogoutDiv').empty()
+        let loginBtn = $('<button>')
+        loginBtn.attr('id', 'loginBtn')
+        loginBtn.attr('type', 'button')
+        loginBtn.addClass('btn btn-info')
+        loginBtn.text('Log In')
+        $('#loginOrLogoutDiv').append(loginBtn)
+    }
+
+    function renderLogoutButton(){
+        $('#loginOrLogoutDiv').empty()
+        let logoutBtn = $('<button>')
+        logoutBtn.attr('id', 'logoutBtn')
+        logoutBtn.attr('type', 'button')
+        logoutBtn.addClass('btn btn-info')
+        logoutBtn.text('Log Out')
+        $('#loginOrLogoutDiv').append(logoutBtn)
+    }
+
+    if (!localStorage.getItem('user_id')){
+        renderLoginButton()
+        $('#loginBtn').click(function(){
+            $('#loginModal').modal('show')
+        })
+    } else {
+        renderLogoutButton()
+        $('#logoutBtn').click(function(){
+            localStorage.clear()
+            location.reload()
+        })
+    }
+
+    $('#loginModalBtn').click(function(){
+        let userLoginInfo = {
+            user_name: $('#loginModalUserName').val().trim(),
+            user_password: $('#loginModalPassword').val().trim()
+        }
+        storeUser(userLoginInfo)
+        location.reload()
+    })
+
+    $('#signupModalBtn').click(function(){
+        let userSignupInfo = {
+            user_name: $('#signupModalUserName').val().trim(),
+            user_password: $('#signupModalPassword').val().trim()
+        }
+    })
+
+    // Store user data to localstorage, needs to happen on login
+    function storeUser(login) {
+        $.post('/api/login', {
+            user_name: login.user_name,
+            user_password: login.user_password
+        }, function(data) {
+            if (data) {
+                localStorage.setItem('user_id', data.user_id)
+            }
+        })
+    }
+
+    // End Log in --------------------------------------------
+
     $('#postModalSubmit').click(function(){
         let userId = $('#postModal').attr('data-user_id')
         console.log(userId)
-        $.post('api/post/' + userId, {post_content: $('#postModalBody').val()}, function(data){
-            console.log(data)
+        $.post('api/post/' + userId, {
+            post_content: $('#postModalBody').val()
+        }, function(data){
+            console.log(data);
+            location.reload();
         })
     })
 
@@ -21,7 +89,7 @@ $( document ).ready(function() {
         console.log($('#editPostModal').attr('data-id'))
         //if(localStorage.getItem('user_id')){
             let newPost = {
-                user_id: "23fb7c7b-1e4d-48fd-95fc-ab7ffc345baa",
+                user_id: "43cd3286-dbd6-4c3a-a3ce-bba6f227beee",
                 // localStorage.getItem('user_id'),
                 post_content: $('#editPostModalBody').val().trim(),
             }
@@ -33,6 +101,7 @@ $( document ).ready(function() {
                 data: newPost,
                 success: function(result) {
                     console.log(result)
+                    location.reload() 
                 }
             })
         //}
@@ -76,7 +145,10 @@ $( document ).ready(function() {
     // Retrieve user_name from database related to user_id specified
     function getUserName(userId){
         return $.get('api/user/' + userId, function(data){
-            userName = data.user_name;
+            if (data){
+                userName = data.user_name;
+            }
+
             return userName;
         })
     }
@@ -154,16 +226,28 @@ $( document ).ready(function() {
 
             newDropletDateTime.text(createdDate);
 
-            getUserName(post.user_id).then(function(userData){
-
+            function appendAll(){
                 // append all data to positions within the newly created row
-                newDropletHeader.append(userData.user_name);
                 newDropletHeader.append(editBtn);
                 newPostDroplet.append(newDropletHeader);
                 newPostDroplet.append(newDropletBody);
                 newPostDroplet.append(newDropletFooter);
                 newPostDroplet.data('post', post);
-            })
+            }
+            if (post.user_id){
+                getUserName(post.user_id).then(function(data){
+                    if (data){
+                        newDropletHeader.append(data.user_name);
+                        appendAll(); 
+                    } else {
+                        appendAll()
+                    }
+                   
+                })
+            } else {
+                appendAll();
+            }
+            
             
         })
         
@@ -188,18 +272,6 @@ $( document ).ready(function() {
     }
 
 
-    // Store user data to localstorage, needs to happen on login
-    function storeUser(login) {
-
-        $.post('/api/login', {
-            user_name: login.user_name,
-            user_password: login.user_password
-        }, function(data) {
-
-            if (data) {
-                localStorage.setItem('user_id', data.user_id)
-            }
-        })
-    }
+    
 
 });

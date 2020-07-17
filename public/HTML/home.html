@@ -41,8 +41,35 @@
 </head>
 
 <body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="homePage.html"><img src="assets/Images/dropletIcon.png" width="30" height="30"
+        class="d-inline-block align-top" alt="">
+        droplet</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Log In  <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="createProfile.html">Create Profile</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="search by username" aria-label="Search">
+            <button class="btn my-2 my-sm-0" type="submit"><img
+              src="https://img.icons8.com/cotton/24/000000/search--v2.png" />
+            </button>
+        </form>
+    </div>
+  </nav>
     
-  <div class="container">
+  <div class="container pt-3">
     
     <div class="row">
       <!-- Taskbar -->
@@ -60,18 +87,26 @@
       <!-- Create Post, Login/signout buttons go here-->
       <div class="col-3" id="buttonsCol">
 
-        <!-- contains create post button -->
-        <div class="create-post-button-container">
-          <!-- Button triggers Post Modal -->
-          <button type="button" class="btn btn-primary" id="createPostButton">
-            Create Post
-          </button>
+        <div class="row">
+          <div class="col-6">
+            <!-- contains create post button -->
+            <div class="create-post-button-container">
+              <!-- Button triggers Post Modal -->
+              <button type="button" class="btn btn-primary" id="createPostButton">
+                Create Post
+              </button>
+            </div>
+          </div>
+          <div class="col-6">
+            <!-- container to hold login or signout button dynamically added with jquery -->
+            <div class="login-signout-button-container" id="loginOrLogoutDiv">
+              <!-- login or signout button appears here from jQuery -->
+            </div>
+          </div>
         </div>
+        
 
-        <!-- container to hold login or signout button dynamically added with jquery -->
-        <div class="login-signout-button-container">
-          <!-- login or signout button appears here from jQuery -->
-        </div>
+        
       
       </div> <!-- Closes #buttonsCol -->
 
@@ -108,7 +143,7 @@
             <!-- End of modal header -->
       
             <!-- Beginning of modal body (Post form) -->
-            <form>
+            <form action= "upload.php" method= "POST" enctype= "multipart/form-data">
 
               <!-- Text area for post and image the user can upload -->
               <div class="modal-body">
@@ -119,7 +154,7 @@
                 
                 <div class="form-group text-center">
                   <label for="postModalImage">Upload an image:</label>
-                  <input style= "margin-left: 80px;" type="file" class="form-control-file" id="postModalImage">
+                  <input style= "margin-left: 80px;" type="file" name= "image" class="form-control-file" id="postModalImage">
                 </div>
                 
               </div>
@@ -127,12 +162,12 @@
               <!-- Modal buttons for submit/cancel -->
               <div class="modal-footer" style= "border: none;">
                   <button style= "width: 45%;" type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                  <button style= "width: 45%; margin-left: 25px;" type="button" class="btn btn-primary" id="postModalSubmit">Post</button>
+                  <button style= "width: 45%; margin-left: 25px;" type="button" name= "imagebtn" class="btn btn-primary" id="postModalSubmit">Post</button>
               </div>
 
             </form>
                       
-          </div> <!-- End of modal content-->
+          </div> <!-- End of post modal content-->
 
         </div>
       </div>
@@ -172,6 +207,70 @@
 
     </div> <!-- Closes .row -->
   </div> <!-- Closes .container -->
+
+  <!-- Signup modal -->
+  <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalLabel">New user signup</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">User Name</label>
+              <input type="text" class="form-control" id="signupModalUserName">
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Password</label>
+              <input type="password" class="form-control" id="signupModalPassword"></input>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="signupModalBtn">Signup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Login modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Enter your login information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">User Name</label>
+              <input type="text" class="form-control" id="loginModalUserName">
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Password</label>
+              <input type="password" class="form-control" id="loginModalPassword"></input>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="loginModalBtn">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!------------------------ End Modals ----------------------->
 
 </body>
 </html>

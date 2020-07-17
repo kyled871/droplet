@@ -1,17 +1,16 @@
 body {
-    height: 100vh;
+    height: 100%;
     min-width: 100%;
 }
 .container {
-    border: 3px solid blue;
+    /* border: 3px solid blue; */
     min-width: 100%;
-    min-height: 100%;
 }
 .task-bar {
     min-height: 100vh;
-    border: 3px solid red;
+    /* border: 3px solid red; */
 }
 #buttonsCol {
     min-height: 100%;
-    border: 3px solid red;
+    /* border: 3px solid red; */
 }
