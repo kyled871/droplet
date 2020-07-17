@@ -19,7 +19,7 @@
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
-  }, 
+  },
   "comments": {
     "notes": "Make sure to add your own passwords to development.password"
   }
