@@ -1,17 +1,156 @@
-body {
-    height: 100vh;
-    min-width: 100%;
+.modal-content {
+    background-color: #d7edf5;
+    position: relative;
+    /* border-radius: 50%; */
+    width: 90%;
+    /* height: 100vw; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 450px;
+    outline: none;
 }
-.container {
+
+;
+.modalContainer {
     border: 3px solid blue;
     min-width: 100%;
     min-height: 100%;
 }
+
+.container {
+    margin-top: 125px;
+}
+
 .task-bar {
     min-height: 100vh;
     border: 3px solid red;
 }
+
 #buttonsCol {
     min-height: 100%;
     border: 3px solid red;
+}
+
+h5 {
+    margin-top: 20px;
+}
+
+.profilePic {
+    border: 1px solid tomato;
+    border-radius: 30px;
+}
+
+.columnOneSectionOne {
+    background-color: white;
+    opacity: 0.8;
+    border: 1px solid yellow;
+    border-radius: 30px;
+    margin-top: 30px;
+    box-shadow: yellow 10px 10px;
+    padding: 20px;
+}
+
+.columnOneSectionTwo {
+    background-color: white;
+    opacity: 0.8;
+    border: 1px solid yellow;
+    border-radius: 30px;
+    margin-top: 30px;
+    box-shadow: yellow 10px 10px;
+    padding: 20px;
+}
+
+.postProfilePic {
+    border: 1px solid tomato;
+    border-radius: 50px;
+    height: 15%;
+}
+
+#columnThreeSectionOne {
+    background-color: white;
+    opacity: 0.;
+    border: 1px solid yellow;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: yellow 10px 10px;
+    height: 100%;
+}
+
+.talkbubble {
+    width: 400px;
+    height: 120px;
+    background: skyblue;
+    position: relative;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 30px;
+}
+
+.talkbubble:before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 26px;
+    width: 0;
+    height: 0;
+    border-top: 13px solid transparent;
+    border-right: 15px solid skyblue;
+    border-bottom: 13px solid transparent;
+}
+
+.textInBubble {
+    padding: 10px;
+}
+
+.reply:hover {
+    text-align: center;
+    border-radius: 5px;
+    padding: 2px;
+    font-size: small;
+    border: tomato 1px solid;
+    box-shadow: 2px 2px tomato;
+    width: 25%;
+}
+
+.viewComments:hover {
+    text-align: center;
+    border-radius: 5px;
+    padding: 2px;
+    font-size: small;
+    border: tomato 1px solid;
+    box-shadow: 2px 2px tomato;
+    width: 25%;
+}
+
+.postComment {
+    display: none;
+}
+
+.postCommentBtn {
+    text-align: center;
+    border-radius: 5px;
+    border: tomato 1px solid;
+    padding: 5px;
+    font-size: small;
+    box-shadow: 3px 3px tomato;
+    float: right;
+    width: 25%;
+}
+
+.userName {
+    color: grey;
+    font-weight: lighter;
+}
+
+.profileName {
+    font-weight: bold
+}
+
+.viewComments {
+    font-size: small;
+}
+
+.reply {
+    font-size: small;
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,174 +15,168 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    
+
     <!-- jQuery -->
     <!-- <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script> -->
 
-    <!-- Script.js -->
-    <script src="/JS/home.js"></script>
+
 
     <title>Droplet</title>
 
-    <style>
-        .modal-content {
-          background-color: #d7edf5;
-          position: relative;
-          /* border-radius: 50%; */
-          width: 90%;
-          /* height: 100vw; */
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          max-height: 450px;
-          outline: none;
-        };
-    </style>
 
 </head>
 
 <body>
-    
-  <div class="container">
-    
-    <div class="row">
-      <!-- Taskbar -->
-      <div class="col-3 task-bar">
-        <!-- Taskbar content goes here -->
-      </div>
 
-      <!-- Posts -->
-      <div class="col-6" id="postsCol">
-          <div id="posts">
-              <!-- Each post will be appended here using jQuery from home.js -->
-          </div>
-      </div> <!-- Closes #postsCol -->
+    <div class="container">
 
-      <!-- Create Post, Login/signout buttons go here-->
-      <div class="col-3" id="buttonsCol">
+        <div class="row">
+            <!-- Taskbar -->
+            <div class="col-3 task-bar">
+                <!-- Taskbar content goes here -->
+            </div>
 
-        <!-- contains create post button -->
-        <div class="create-post-button-container">
-          <!-- Button triggers Post Modal -->
-          <button type="button" class="btn btn-primary" id="createPostButton">
+            <!-- Posts -->
+            <div class="col-6" id="postsCol">
+                <div id="posts">
+                    <!-- Each post will be appended here using jQuery from home.js -->
+                </div>
+            </div>
+            <!-- Closes #postsCol -->
+
+            <!-- Create Post, Login/signout buttons go here-->
+            <div class="col-3" id="buttonsCol">
+
+                <!-- contains create post button -->
+                <div class="create-post-button-container">
+                    <!-- Button triggers Post Modal -->
+                    <button type="button" class="btn btn-primary" id="createPostButton">
             Create Post
           </button>
-        </div>
+                </div>
 
-        <!-- container to hold login or signout button dynamically added with jquery -->
-        <div class="login-signout-button-container">
-          <!-- login or signout button appears here from jQuery -->
-        </div>
-      
-      </div> <!-- Closes #buttonsCol -->
+                <!-- container to hold login or signout button dynamically added with jquery -->
+                <div class="login-signout-button-container">
+                    <!-- login or signout button appears here from jQuery -->
+                </div>
 
-      <!------------------------ Modals ----------------------->
-      <!-- Post Modal Start -->
-      <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModaltitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-      
-          <div class="modal-content">
-      
-            <!-- Beginning of modal header -->
-            <div class="modal-header" style= "border: none;"> 
-              <div class="container">
+            </div>
+            <!-- Closes #buttonsCol -->
 
-                <div class="row">
-                  <div class="col-md-12">
-                    <!-- Have to do in-line styling otherwise the "close" bootstrap class messes things up -->
-                    <button style= "margin-left: 375px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <!------------------------ Modals ----------------------->
+            <!-- Post Modal Start -->
+            <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModaltitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+
+                    <div class="modal-content">
+
+                        <!-- Beginning of modal header -->
+                        <div class="modal-header" style="border: none;">
+                            <div class="modalContainer">
+                                <!--changed .container to .modalContainer-->
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- Have to do in-line styling otherwise the "close" bootstrap class messes things up -->
+                                        <button style="margin-left: 375px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                  </div>
+                                    </div>
+                                </div>
+
+                                <!-- Margin top here to put a bit of space between text and X -->
+                                <div style="margin-top: 10px;" class="row">
+                                    <div class="col-12">
+                                        <h5 class="modal-title w-100 text-center" id="postModaltitle">Create Your Post Here!</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- End of modal header -->
+
+                        <!-- Beginning of modal body (Post form) -->
+                        <form>
+
+                            <!-- Text area for post and image the user can upload -->
+                            <div class="modal-body">
+
+                                <div class="form-group">
+                                    <textarea style="resize: none;" class="form-control rounded" rows="4" id="postModalBody"></textarea>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <label for="postModalImage">Upload an image:</label>
+                                    <input style="margin-left: 80px;" type="file" class="form-control-file" id="postModalImage">
+                                </div>
+
+                            </div>
+
+                            <!-- Modal buttons for submit/cancel -->
+                            <div class="modal-footer" style="border: none;">
+                                <button style="width: 45%;" type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                                <button style="width: 45%; margin-left: 25px;" type="button" class="btn btn-primary" id="postModalSubmit">Post</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <!-- End of modal content-->
+
                 </div>
-                
-                <!-- Margin top here to put a bit of space between text and X -->
-                <div style= "margin-top: 10px;" class="row">
-                  <div class="col-12">
-                    <h5 class="modal-title w-100 text-center" id="postModaltitle">Create Your Post Here!</h5>
-                  </div>
-                </div>
+            </div>
+            <!-- Post Modal End -->
 
-              </div>
-              
-            </div> 
-            <!-- End of modal header -->
-      
-            <!-- Beginning of modal body (Post form) -->
-            <form>
-
-              <!-- Text area for post and image the user can upload -->
-              <div class="modal-body">
-
-                <div class="form-group">
-                  <textarea style= "resize: none;" class="form-control rounded" rows="4" id="postModalBody"></textarea>
-                </div>
-                
-                <div class="form-group text-center">
-                  <label for="postModalImage">Upload an image:</label>
-                  <input style= "margin-left: 80px;" type="file" class="form-control-file" id="postModalImage">
-                </div>
-                
-              </div>
-
-              <!-- Modal buttons for submit/cancel -->
-              <div class="modal-footer" style= "border: none;">
-                  <button style= "width: 45%;" type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                  <button style= "width: 45%; margin-left: 25px;" type="button" class="btn btn-primary" id="postModalSubmit">Post</button>
-              </div>
-
-            </form>
-                      
-          </div> <!-- End of modal content-->
-
-        </div>
-      </div>
-      <!-- Post Modal End -->
-
-      <!-- Edit Modal Begin -->
-      <div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editPostModalTitle">Post Editor</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <!-- Edit Modal Begin -->
+            <div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editPostModalTitle">Post Editor</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <!-- <div class="form-group">
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <!-- <div class="form-group">
                   <label for="recipient-name" class="col-form-label">Recipient:</label>
                   <input type="text" class="form-control" id="recipient-name">
                 </div> -->
-                <div class="form-group">
-                  <label for="message-text" class="col-form-label">Edit your post:</label>
-                  <textarea class="form-control" id="editPostModalBody"></textarea>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Edit your post:</label>
+                                    <textarea class="form-control" id="editPostModalBody"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="editPostModalSubmit">Edit Post</button>
+                        </div>
+                    </div>
                 </div>
-              </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="editPostModalSubmit">Edit Post</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Edit Modal End -->
-        
+            <!-- Edit Modal End -->
 
-    </div> <!-- Closes .row -->
-  </div> <!-- Closes .container -->
+
+        </div>
+        <!-- Closes .row -->
+    </div>
+    <!-- Closes .container -->
 
 </body>
+<!-- Script.js -->
+<script src="/JS/home.js"></script>
+
 </html>
 
 <!-- Extra suff if we have time -->
-      <!-- Post button spot for now 
+<!-- Post button spot for now 
       Later if we have time make it so we can click over here to generate
       certain types of posts-->
 
-      <!-- <form>
+<!-- <form>
         <div class="form-row align-items-center">
           <div class="col-auto my-1">
             <label class="mr-sm-2" for="inlineFormCustomSelect">Preference</label>
@@ -204,7 +199,7 @@
         </div>
       </form> -->
 
-      <!-- ex)  New Post button
+<!-- ex)  New Post button
                 Memes href to load meme posts etc
                 Pets
                 Politics-->

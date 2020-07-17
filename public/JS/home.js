@@ -1,5 +1,5 @@
-$( document ).ready(function() {
-    console.log( "ready!" );
+$(document).ready(function() {
+    console.log("ready!");
 
     // global variables
     const postsContainer = $('#posts')
@@ -7,27 +7,27 @@ $( document ).ready(function() {
     let userName;
     let allComments = [];
 
-    $('#postModalSubmit').click(function(){
+    $('#postModalSubmit').click(function() {
         let userId = $('#postModal').attr('data-user_id')
         console.log(userId)
-        $.post('api/post/' + userId, {post_content: $('#postModalBody').val()}, function(data){
+        $.post('api/post/' + userId, { post_content: $('#postModalBody').val() }, function(data) {
             console.log(data)
         })
     })
 
     $(document).on('click', 'button.edit', editPost);
-    $('#editPostModalSubmit').click(function(){
+    $('#editPostModalSubmit').click(function() {
         let id = $(this).attr('data-id')
         console.log($('#editPostModal').attr('data-id'))
-        //if(localStorage.getItem('user_id')){
-            let newPost = {
-                user_id: "23fb7c7b-1e4d-48fd-95fc-ab7ffc345baa",
-                // localStorage.getItem('user_id'),
-                post_content: $('#editPostModalBody').val().trim(),
-            }
-            console.log(newPost)
+            //if(localStorage.getItem('user_id')){
+        let newPost = {
+            user_id: "23fb7c7b-1e4d-48fd-95fc-ab7ffc345baa",
+            // localStorage.getItem('user_id'),
+            post_content: $('#editPostModalBody').val().trim(),
+        }
+        console.log(newPost)
             // let modalImage = $('#')
-            $.ajax({
+        $.ajax({
                 url: '/api/post/' + $('#editPostModal').attr('data-id'),
                 type: 'PUT',
                 data: newPost,
@@ -35,15 +35,15 @@ $( document ).ready(function() {
                     console.log(result)
                 }
             })
-        //}
+            //}
     })
 
 
     // get the post data from the posts table of the droplet database
-    function getPosts(){
-        $.get('/api/posts', function(data){
+    function getPosts() {
+        $.get('/api/posts', function(data) {
             posts = data;
-            if (!posts || !posts.length){
+            if (!posts || !posts.length) {
                 emptyDisplay();
             } else {
                 initializeRows();
@@ -52,7 +52,7 @@ $( document ).ready(function() {
     }
 
     // if there are no posts, message to user displays
-    function emptyDisplay(){
+    function emptyDisplay() {
         postsContainer.empty();
         let messageToUser = $('<h2>');
         messageToUser.addClass('text-center');
@@ -61,72 +61,72 @@ $( document ).ready(function() {
     }
 
     // call the getPosts function to either show empty display or initialize rows
-    getPosts(); 
-    
+    getPosts();
+
     // initializes rows to be created
-    function initializeRows(){
+    function initializeRows() {
         postsContainer.empty();
         let allPosts = [];
-        for (let i = 0; i < posts.length; i++){
+        for (let i = 0; i < posts.length; i++) {
             allPosts.push(createNewRow(posts[i]));
         }
         postsContainer.append(allPosts)
     }
 
     // Retrieve user_name from database related to user_id specified
-    function getUserName(userId){
-        return $.get('api/user/' + userId, function(data){
+    function getUserName(userId) {
+        return $.get('api/user/' + userId, function(data) {
             userName = data.user_name;
             return userName;
         })
     }
 
     // Retrieve comments from database related to single post_id specified
-    function getComments(postId){ 
+    function getComments(postId) {
 
-        return $.get('/api/comments/' + postId, function(data){
+        return $.get('/api/comments/' + postId, function(data) {
 
-            for (let i = 0; i < data.length; i++){
+            for (let i = 0; i < data.length; i++) {
                 allComments.push(data[i])
             }
             return allComments
-            
+
         })
     }
 
     // create the rows to populate postsContainer
-    function createNewRow(post){
+    function createNewRow(post) {
         // div contains the whole post droplet
         let newPostDroplet = $('<div>');
-        
+
         // bootstrap classes go here for styling the whole droplet
         newPostDroplet.addClass('rounded');
-        
+
         // div contains the top section of the droplet
         let newDropletHeader = $('<div>');
-        
+
         // bootstrap classes go here to style the top section of the droplet
         newDropletHeader.addClass('');
-        
+
         // div contains the body/middle section of the droplet
         let newDropletBody = $('<div>');
 
         // content of the post
         newDropletBody.text(post.post_content);
-        
+
         // bootstrap classes go here to style the body/middle section of the droplet
         newDropletBody.addClass('');
-        
+
         // div contains the bottom section of the droplet
         let newDropletFooter = $('<div>');
-        
+
         // bootstrap classes go here to style the bottom section of the droplet
         newDropletFooter.addClass('');
 
         // gets comments and adds them to newDropletFooter
-        getComments(post.post_id).then(function(data){
-            let commentArr =  [];
-            for (let i = 0; i < data.length; i++){
+        getComments(post.post_id).then(function(data) {
+            let commentArr = [];
+            for (let i = 0; i < data.length; i++) {
                 newDropletFooter.append(data[i].comment_content + '<br>')
             }
 
@@ -142,7 +142,7 @@ $( document ).ready(function() {
 
             // bootstrap classes 
             editBtn.addClass('edit btn btn-info');
-            
+
             // display time and date somewhere in small text
             let newDropletDateTime = $('<small>');
 
@@ -154,7 +154,7 @@ $( document ).ready(function() {
 
             newDropletDateTime.text(createdDate);
 
-            getUserName(post.user_id).then(function(userData){
+            getUserName(post.user_id).then(function(userData) {
 
                 // append all data to positions within the newly created row
                 newDropletHeader.append(userData.user_name);
@@ -164,24 +164,25 @@ $( document ).ready(function() {
                 newPostDroplet.append(newDropletFooter);
                 newPostDroplet.data('post', post);
             })
-            
+
         })
-        
+
         return newPostDroplet;
-        
+
     }
 
-    function editPost(){
+    function editPost() {
         let id = $(this).attr('data-id')
         let body = $(this).attr('data-body')
         $('#editPostModal').attr('data-id', id)
-        //$('#editPostModal').attr('data-body', body)
+            //$('#editPostModal').attr('data-body', body)
         $('#editPostModalBody').html(body)
         $('#editPostModal').modal('show')
     }
 
     $('#createPostButton').on('click', createPost)
-    function createPost(){
+
+    function createPost() {
         let id = '938a7d08-3c76-48d9-9b8b-f1fb6015f8dc' // localStorage.getItem('user_id')
         $('#postModal').attr('data-user_id', id)
         $('#postModal').modal('show')
@@ -202,4 +203,9 @@ $( document ).ready(function() {
         })
     }
 
+});
+
+// reveal post comment section when click "reply"
+$(".reply").click(function() {
+    $(".postComment").css('display', 'inline');
 });
