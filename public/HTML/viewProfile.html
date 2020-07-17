@@ -33,16 +33,29 @@
 
 <body>
 
-    <nav class="navbar fixed-top navbar-light bg-light">
-        <a class="navbar-brand" href="home.html">
-            <img src="../Images/dropletIcon.png" width="30" height="30" class="d-inline-block align-top" alt=""> Droplet
+    <nav class=" navbar fixed-top navbar-expand-lg navbar-light bg-light ">
+        <a class=" navbar-brand " href=" home.html "><img src=" ../Images/dropletIcon.png " width=" 30 " height=" 30 " class=" d-inline-block align-top " alt=" "> droplet
         </a>
+        <button class=" navbar-toggler " type=" button " data-toggle=" collapse " data-target=" #navbarSupportedContent " aria-controls=" navbarSupportedContent " aria-expanded=" false " aria-label=" Toggle navigation ">
+            <span class=" navbar-toggler-icon "></span>
+        </button>
 
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search by username" aria-label="Search">
-            <button class="btn my-2 my-sm-0" type="submit"><img
-                    src="https://img.icons8.com/cotton/24/000000/search--v2.png" /></button>
-        </form>
+        <div class=" collapse navbar-collapse " id=" navbarSupportedContent ">
+            <ul class=" navbar-nav mr-auto ">
+                <li class=" nav-item ">
+                    <!-- login or signout button appears here from jQuery -->
+                    <a class=" nav-link login-signout-button-container " href="# ">Log Out | <span class=" sr-only ">(current)</span></a>
+                </li>
+                <li class=" nav-item ">
+                    <a class=" nav-link " href=" createProfile.html ">Create Profile</a>
+                </li>
+            </ul>
+            <form class=" form-inline my-2 my-lg-0 ">
+                <input class=" form-control mr-sm-2 " type=" search " placeholder=" search by username " aria-label=" Search ">
+                <button class=" btn my-2 my-sm-0 " type=" submit "><img
+                        src=" https://img.icons8.com/cotton/24/000000/search--v2.png " /></button>
+            </form>
+        </div>
     </nav>
 
     <div class="container">
@@ -54,7 +67,7 @@
                 <a href="viewProfile.html"><span class="userName">Brandy Brown</span></a>
                 <section class="columnOneSectionOne">
                     <p>
-                        <span class="links">Create New Posts</span>
+                        <span class="links create-post-button-container">Create New Posts</span>
                     </p>
                 </section>
 

@@ -22,7 +22,8 @@
     margin-top: 125px;
 }
 
-.task-bar {
+
+/*.task-bar {
     min-height: 100vh;
     border: 3px solid red;
 }
@@ -31,6 +32,7 @@
     min-height: 100%;
     border: 3px solid red;
 }
+*/
 
 h5 {
     margin-top: 20px;
@@ -107,7 +109,6 @@ h5 {
     text-align: center;
     border-radius: 5px;
     padding: 2px;
-    font-size: small;
     border: tomato 1px solid;
     box-shadow: 2px 2px tomato;
     width: 25%;
