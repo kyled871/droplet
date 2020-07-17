@@ -33,6 +33,7 @@ $( document ).ready(function() {
                 data: newPost,
                 success: function(result) {
                     console.log(result)
+                    location.reload() 
                 }
             })
         //}
@@ -76,6 +77,7 @@ $( document ).ready(function() {
     // Retrieve user_name from database related to user_id specified
     function getUserName(userId){
         return $.get('api/user/' + userId, function(data){
+            console.log(data)
             userName = data.user_name;
             return userName;
         })
@@ -154,16 +156,23 @@ $( document ).ready(function() {
 
             newDropletDateTime.text(createdDate);
 
-            getUserName(post.user_id).then(function(userData){
-
+            function appendAll(){
                 // append all data to positions within the newly created row
-                newDropletHeader.append(userData.user_name);
                 newDropletHeader.append(editBtn);
                 newPostDroplet.append(newDropletHeader);
                 newPostDroplet.append(newDropletBody);
                 newPostDroplet.append(newDropletFooter);
                 newPostDroplet.data('post', post);
-            })
+            }
+            if (post.user_name){
+                getUserName(post.user_id).then(function(userData){
+                    newDropletHeader.append(userData.user_name);
+                    appendAll(); 
+                })
+            } else {
+                appendAll(); 
+            }
+            
             
         })
         
