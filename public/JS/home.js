@@ -11,7 +11,8 @@ $( document ).ready(function() {
         let userId = $('#postModal').attr('data-user_id')
         console.log(userId)
         $.post('api/post/' + userId, {post_content: $('#postModalBody').val()}, function(data){
-            console.log(data)
+            console.log(data);
+            location.reload();
         })
     })
 
@@ -170,7 +171,7 @@ $( document ).ready(function() {
                     appendAll(); 
                 })
             } else {
-                appendAll(); 
+                appendAll();
             }
             
             
