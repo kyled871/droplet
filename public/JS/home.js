@@ -1,6 +1,11 @@
 $(document).ready(function() {
     console.log("ready!");
 
+    // reveal post comment section when click "reply"
+    $(".reply").click(function() {
+        $(".postComment").css('display', 'inline');
+    });
+
     // global variables
     const postsContainer = $('#posts')
     let posts;
@@ -203,9 +208,4 @@ $(document).ready(function() {
         })
     }
 
-});
-
-// reveal post comment section when click "reply"
-$(".reply").click(function() {
-    $(".postComment").css('display', 'inline');
 });
