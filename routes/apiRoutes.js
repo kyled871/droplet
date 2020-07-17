@@ -189,12 +189,12 @@ module.exports = (app) => {
         if (!user) {
           res.status(400).send("Invalid Login!");
         } else {
-          bcrypt.compare(req.body.user_password, user.user_password, function (
+          bcrypt.compare(req.body.user_password, user.dataValues.user_password, function (
             err,
             result
           ) {
             if (result) {
-              res.redirect("/");
+              res.send(user.dataValues);
             } else {
               res.status(400).send("Invalid Login!");
             }

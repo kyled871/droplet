@@ -1,6 +1,7 @@
 $( document ).ready(function() {
     console.log( "ready!" );
 
+    
     // global variables
     const postsContainer = $('#posts')
     let posts;
@@ -48,7 +49,10 @@ $( document ).ready(function() {
             user_password: $('#loginModalPassword').val().trim()
         }
         storeUser(userLoginInfo)
-        location.reload()
+        $('#loginModal').modal('toggle')
+        getPosts()
+        renderLogoutButton()
+
     })
 
     $('#signupModalBtn').click(function(){
@@ -60,10 +64,12 @@ $( document ).ready(function() {
 
     // Store user data to localstorage, needs to happen on login
     function storeUser(login) {
+        console.log(login)
         $.post('/api/login', {
             user_name: login.user_name,
             user_password: login.user_password
         }, function(data) {
+            console.log(data)
             if (data) {
                 localStorage.setItem('user_id', data.user_id)
             }
@@ -71,6 +77,15 @@ $( document ).ready(function() {
     }
 
     // End Log in --------------------------------------------
+
+    // Create/edit post ---------------------------------------
+
+    $('#createPostButton').on('click', createPost)
+    function createPost(){
+        let id = localStorage.getItem('user_id')
+        $('#postModal').attr('data-user_id', id)
+        $('#postModal').modal('show')
+    }
 
     $('#postModalSubmit').click(function(){
         let userId = $('#postModal').attr('data-user_id')
@@ -107,6 +122,18 @@ $( document ).ready(function() {
         //}
     })
 
+    function editPost(){
+        let id = $(this).attr('data-id')
+        let body = $(this).attr('data-body')
+        $('#editPostModal').attr('data-id', id)
+        //$('#editPostModal').attr('data-body', body)
+        $('#editPostModalBody').html(body)
+        $('#editPostModal').modal('show')
+    }
+
+    // End Create/edit post ------------------------------------------
+
+    // Display all posts ---------------------------------------------
 
     // get the post data from the posts table of the droplet database
     function getPosts(){
@@ -148,21 +175,18 @@ $( document ).ready(function() {
             if (data){
                 userName = data.user_name;
             }
-
             return userName;
         })
     }
 
     // Retrieve comments from database related to single post_id specified
     function getComments(postId){ 
-
         return $.get('/api/comments/' + postId, function(data){
 
             for (let i = 0; i < data.length; i++){
                 allComments.push(data[i])
             }
             return allComments
-            
         })
     }
 
@@ -226,9 +250,15 @@ $( document ).ready(function() {
 
             newDropletDateTime.text(createdDate);
 
+
             function appendAll(){
                 // append all data to positions within the newly created row
-                newDropletHeader.append(editBtn);
+                console.log(localStorage.getItem('user_id'))
+                console.log(post.user_id)
+                if (localStorage.getItem('user_id') === post.user_id){
+                    newDropletHeader.append(editBtn);
+                }
+                newDropletHeader.append(newDropletDateTime)
                 newPostDroplet.append(newDropletHeader);
                 newPostDroplet.append(newDropletBody);
                 newPostDroplet.append(newDropletFooter);
@@ -242,36 +272,14 @@ $( document ).ready(function() {
                     } else {
                         appendAll()
                     }
-                   
                 })
             } else {
                 appendAll();
-            }
-            
-            
+            }    
         })
-        
         return newPostDroplet;
-        
     }
 
-    function editPost(){
-        let id = $(this).attr('data-id')
-        let body = $(this).attr('data-body')
-        $('#editPostModal').attr('data-id', id)
-        //$('#editPostModal').attr('data-body', body)
-        $('#editPostModalBody').html(body)
-        $('#editPostModal').modal('show')
-    }
+    // End display all posts ----------------------------------------
 
-    $('#createPostButton').on('click', createPost)
-    function createPost(){
-        let id = '938a7d08-3c76-48d9-9b8b-f1fb6015f8dc' // localStorage.getItem('user_id')
-        $('#postModal').attr('data-user_id', id)
-        $('#postModal').modal('show')
-    }
-
-
-    
-
-});
+}); // Close document ready function
