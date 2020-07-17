@@ -21,12 +21,35 @@
 
 
 
-    <title>Droplet</title>
+    <title>Droplet | Home Page</title>
 
 
 </head>
 
 <body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand " href="home.html "><img src="../Images/dropletIcon.png " width="30 " height="30 " class="d-inline-block align-top " alt=" "> droplet
+        </a>
+        <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="Toggle navigation ">
+        <span class="navbar-toggler-icon "></span>
+    </button>
+
+        <div class="collapse navbar-collapse " id="navbarSupportedContent ">
+            <ul class="navbar-nav mr-auto ">
+                <li class="nav-item ">
+                    <a class="nav-link " href="# ">Log In | <span class="sr-only ">(current)</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link " href="createProfile.html ">Create Profile</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0 ">
+                <input class="form-control mr-sm-2 " type="search " placeholder="search by username " aria-label="Search ">
+                <button class="btn my-2 my-sm-0 " type="submit "><img
+                    src="https://img.icons8.com/cotton/24/000000/search--v2.png " /></button>
+            </form>
+        </div>
+    </nav>
 
     <div class="container">
 
@@ -50,9 +73,7 @@
                 <!-- contains create post button -->
                 <div class="create-post-button-container">
                     <!-- Button triggers Post Modal -->
-                    <button type="button" class="btn btn-primary" id="createPostButton">
-            Create Post
-          </button>
+
                 </div>
 
                 <!-- container to hold login or signout button dynamically added with jquery -->
@@ -164,6 +185,7 @@
         <!-- Closes .row -->
     </div>
     <!-- Closes .container -->
+    -->
 
 </body>
 <!-- Script.js -->

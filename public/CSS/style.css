@@ -103,7 +103,7 @@ h5 {
     padding: 10px;
 }
 
-.reply:hover {
+.links:hover {
     text-align: center;
     border-radius: 5px;
     padding: 2px;
@@ -147,10 +147,6 @@ h5 {
     font-weight: bold
 }
 
-.viewComments {
-    font-size: small;
-}
-
-.reply {
+.comments {
     font-size: small;
 }
