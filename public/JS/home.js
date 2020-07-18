@@ -48,31 +48,28 @@ $( document ).ready(function() {
         $('#createPorfileOrPostDiv').append(createPostBtn)
     }
 
-    if (!localStorage.getItem('user_id')){
-        renderLoginButton()
-        renderSignUpButton()
-        $('#loginBtn').click(function(){
-            $('#loginModal').modal('show')
-        })
-        $('#signUpButton').click(function(){
-            $('#signupModal').modal('show')
-        })
-    } else {
-        renderLogoutButton()
-        renderCreatePostButton()
-        $('#logoutBtn').click(function(){
-            localStorage.clear()
-            location.reload()
-        })
+    // Loads button to page depending on whether user is sign in or not
+    function whichButtons(){
+        if (!localStorage.getItem('user_id')){
+            renderLoginButton()
+            renderSignUpButton()
+            $('#loginBtn').click(function(){
+                $('#loginModal').modal('show')
+            })
+            $('#signUpButton').click(function(){
+                $('#signupModal').modal('show')
+            })
+        } else {
+            renderCreatePostButton()
+            renderLogoutButton()
+            $('#logoutBtn').click(function(){
+                localStorage.clear()
+                whichButtons()
+                getPosts()
+            })
+        }
     }
-
-
-
-    /*
-    button type="button" class="btn btn-primary btn-block" id="createPostButton">
-        Create Post
-    </button>
-    */
+    whichButtons()
 
     $('#loginModalBtn').click(function(){
         let userLoginInfo = {
@@ -81,22 +78,36 @@ $( document ).ready(function() {
         }
         storeUser(userLoginInfo)
         $('#loginModal').modal('toggle')
-        getPosts()
-        renderLogoutButton()
-
     })
 
-    $('#signupModalBtn').click(function(){
+    $('#signupModalSubmit').click(function(){
         let userSignupInfo = {
-            user_firstName: $('#signupModalFirstName'),
-            user_lastName: $('#signupModalLastName'),
+            user_firstName: $('#signupModalFirstName').val().trim(),
+            user_lastName: $('#signupModalLastName').val().trim(),
             user_name: $('#signupModalUserName').val().trim(),
             user_password: $('#signupModalPassword').val().trim(),
-            user_email: $('#signupModalEmail'),
-            user_birthday: $('#signupModalBirthday'),
-            user_bio: $('#signupModalBio')
+            user_email: $('#signupModalEmail').val().trim(),
+            user_birthday: $('#signupModalBirthday').val().trim(),
+            user_bio: $('#signupModalBio').val().trim()
         }
+        console.log(userSignupInfo)
+
+        $.post('/api/signup/', userSignupInfo, function(user) {
+            console.log(user)
+            if(user){
+                storeUser({
+                user_password: userSignupInfo.user_password,
+                user_name: userSignupInfo.user_name
+                })
+                $('#signupModal').modal('toggle')
+                whichButtons()
+                getPosts()
+            }
+        })
     })
+
+
+
 
     // Store user data to localstorage, needs to happen on login
     function storeUser(login) {
@@ -106,6 +117,8 @@ $( document ).ready(function() {
         }, function(data) {
             if (data) {
                 localStorage.setItem('user_id', data.user_id)
+                whichButtons()
+                getPosts()
             }
         })
     }
@@ -115,6 +128,7 @@ $( document ).ready(function() {
     // Create/edit post ---------------------------------------
 
     $('#createPostButton').on('click', createPost)
+    
     function createPost(){
         let id = localStorage.getItem('user_id')
         $('#postModal').attr('data-user_id', id)
@@ -126,7 +140,12 @@ $( document ).ready(function() {
         $.post('api/post/' + userId, {
             post_content: $('#postModalBody').val()
         }, function(data){
-            location.reload();
+            //location.reload();
+            if (data){
+                getPosts();
+                $('#postModal').modal('toggle')
+                $('#postModalBody').val('')
+            }
         })
     })
 
@@ -143,7 +162,7 @@ $( document ).ready(function() {
                 type: 'PUT',
                 data: newPost,
                 success: function(result) {
-                    location.reload() 
+                    // location.reload() 
                 }
             })
         //}
@@ -161,25 +180,37 @@ $( document ).ready(function() {
     // End Create/edit post ------------------------------------------
 
     // Create/edit comments ------------------------------------------
-/*
 
     $(document).on('click', 'button.addComment', createComment)
-    function createComment(){
+    
+    function createComment(data){
+        console.log(data.target.attributes[0].value)
         let id = localStorage.getItem('user_id')
         $('#commentModal').attr('data-user_id', id)
+        $('#commentModal').attr('data-post_id', data.target.attributes[0].value)
         $('#commentModal').modal('show')
     }
 
-    $('#postModalSubmit').click(function(){
-        let userId = $('#postModal').attr('data-user_id')
-        $.post('api/post/' + userId, {
-            post_content: $('#postModalBody').val()
+    $('#commentModalSubmit').click(function(){
+
+        console.log('Clicked')
+        let userId = $('#commentModal').attr('data-user_id')
+        let postId = $('#commentModal').attr('data-post_id')
+        $.post('api/comment/', {
+            user_id: userId,
+            post_id: postId,
+            comment_content: $('#commentModalBody').val().trim()        
         }, function(data){
-            location.reload();
+            if (data){
+                $('#commentModal').modal('toggle')
+                getPosts();
+                $('#commentModalBody').val('')
+            }
         })
     })
+/*
 
-    $(document).on('click', 'button.edit', editPost);
+    $(document).on('click', 'button.editComment', editPost);
     $('#editPostModalSubmit').click(function(){
         let id = $(this).attr('data-id')
         //if(localStorage.getItem('user_id')){
@@ -300,6 +331,7 @@ $( document ).ready(function() {
         // bootstrap classes go here to style the bottom section of the droplet
         newDropletFooter.addClass('card-body');
 
+        // Add comment button, only shows up if logged in       
         let addComment = $('<button>')
         addComment.attr('data-post_id', post.post_id)
         addComment.attr('data-user_id', localStorage.getItem('user_id'))
@@ -308,7 +340,7 @@ $( document ).ready(function() {
 
         // gets comments and adds them to newDropletFooter
         getComments(post.post_id).then(function(data){
-            let commentArr =  [];
+            
             for (let i = 0; i < data.length; i++){
                 newDropletFooter.append(data[i].comment_content + '<br>')
             }
@@ -345,8 +377,8 @@ $( document ).ready(function() {
             let createdDate = new Date(post.createdAt);
 
             // format createdDate with moment
-            // createdDate = moment(createdDate).format("MMMM Do YYYY, h:mm:ss a");
-
+            createdDate = dayjs(createdDate).format("MMM D, YYYY h:mm A");
+            
             newDropletDateTime.html('<br>' + createdDate);
 
 
@@ -356,7 +388,9 @@ $( document ).ready(function() {
                     newDropletHeader.append(editBtn);
                     newDropletHeader.append(deleteBtn);
                 }
-                
+                if (localStorage.getItem('user_id')){
+                    newDropletFooter.append(addComment)
+                }
                 newDropletBody.append(newDropletDateTime)
                 newDropletCardBody.append(newDropletHeader);
                 newDropletCardBody.append(newDropletBody);

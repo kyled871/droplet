@@ -11,12 +11,17 @@
     <link rel="stylesheet" href="/CSS/style.css">
 
     <!-- JS, Popper.js, and jQuery -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     
     <!-- jQuery -->
     <!-- <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script> -->
+
+    <!-- Day.js -->
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+
 
     <!-- Script.js -->
     <script src="/JS/home.js"></script>
@@ -35,7 +40,20 @@
           align-items: center;
           max-height: 450px;
           outline: none;
+        }
+        #modal-content1 {
+          background-color: #d7edf5;
+          position: relative;
+          /* border-radius: 50%; */
+          width: 90%;
+          /* height: 100vw; */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          max-height: 600px;
+          outline: none;
         };
+        
     </style>
 
 </head>
@@ -210,44 +228,58 @@
   <!----- Signup modal ----->
   <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content" id= 'modal-content1'>
         <div class="modal-header">
-          <h5 class="modal-title" id="signupModalLabel">Signup</h5>
+          <h5 class="modal-title" id="signupModalLabel">Your Info for Sale</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <form>
+
             <div class="form-row">
               <div class="col">
-                <label for="inputEmail4">First Name</label>
-                <input type="text" class="form-control" placeholder="First name">
+                <label for="signupModalFirstName">First Name</label>
+                <input type="text" class="form-control" id="signupModalFirstName" placeholder="First name">
               </div>
               <div class="col">
-                <label for="inputEmail4">Last Name</label>
-                <input type="text" class="form-control" placeholder="Last name">
+                <label for="signupModalLastName">Last Name</label>
+                <input type="text" class="form-control" id="signupModalLastName" placeholder="Last name">
               </div>
             </div>
-            <label for="birthday">Birthday:</label>
-            <input type="date" id="birthday" name="birthday">
-            <div class="form-group col-md-6">
-              <label for="inputEmail4">Email</label>
-              <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+
+            <div class="form-row">
+              <div class="col-md-6"> 
+                  <label for="birthday">Birthday</label>
+                  <input class= "rounded" style= "width: 100%; height: 55%; border: 1px solid #dbdfe4;" type="date" id="signupModalBirthday" name="birthday">
+              </div>
+                <div class="col">
+                  <label for="inputEmail4">Email</label>
+                  <input type="email" class="form-control" id="signupModalEmail" placeholder="Email">
+                </div>
             </div>
-            <div class="form-group col-md-6">
-              <label for="recipient-name" class="col-form-label">User Name</label>
-              <input type="text" class="form-control" id="signupModalUserName">
+
+            <div class= "form-row">
+              <div class="col">
+                <label for="recipient-name" class="col-form-label">Username</label>
+                <input type="text" class="form-control" id="signupModalUserName">
+              </div>
+              <div class="col">
+                <label for="message-text" class="col-form-label">Password</label>
+                <input type="password" class="form-control" id="signupModalPassword"></input>
+              </div>
             </div>
+
             <div class="form-group">
-              <label for="message-text" class="col-form-label">Password</label>
-              <input type="password" class="form-control" id="signupModalPassword"></input>
+              <label for="message-text" class="col-form-label">Tell Us About Yo'Self: </label>
+              <textarea style= "resize: none;" type="text" class="form-control" id="signupModalBio"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="signupModalBtn">Signup</button>
+          <button type="button" class="btn btn-primary" id="signupModalSubmit">Signup</button>
         </div>
       </div>
     </div>
@@ -316,7 +348,7 @@
         </div> 
         <!-- End of modal header -->
   
-        <!-- Beginning of modal body (Post form) -->
+        <!-- Beginning of comment modal body -->
         <form class="container">
 
           <!-- Text area for post and image the user can upload -->
@@ -326,10 +358,7 @@
               <textarea style= "resize: none; min-width: 100%;" class="form-control rounded" rows="5" id="commentModalBody"></textarea>
             </div>
             
-            <!-- <div class="form-group text-center">
-              <label for="postModalImage">Upload an image:</label>
-              <input style= "margin-left: 80px;" type="file" name= "image" class="form-control-file" id="postModalImage">
-            </div> -->                 
+                             
 
             <!-- Modal buttons for submit/cancel -->
             <div class="modal-footer" style= "border: none;">
@@ -352,7 +381,7 @@
 
     </div>
   </div>
-  <!-- Post Modal End -->
+  <!-- Comment Modal End -->
 
   <!----- Edit Comment Modal ----->
   <div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="editCommentModalLabel" aria-hidden="true">

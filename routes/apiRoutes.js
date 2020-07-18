@@ -119,6 +119,9 @@ module.exports = (app) => {
           // user_id: req.params.user,
           post_id: req.params.post,
         },
+        order: [
+          ['createdAt', 'DESC']
+      ],
       })
       .then((comments) => {
         res.json(comments);
