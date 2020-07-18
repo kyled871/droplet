@@ -10,6 +10,9 @@ module.exports = (app) => {
           where: {
             user_id: req.params.user,
           },
+          order: [
+            ['createdAt', 'DESC']
+        ],
         })
         .then((posts) => {
           res.json(posts);
@@ -19,7 +22,11 @@ module.exports = (app) => {
         });
     } else {
       db.posts
-        .findAll()
+        .findAll({
+          order: [
+            ['createdAt', 'DESC']
+        ],
+        })
         .then((posts) => {
           res.json(posts);
         })
@@ -159,26 +166,35 @@ module.exports = (app) => {
 
   // creates user information into db -----------
   app.post("/api/signup/", (req, res) => {
-    db.users
-      .create({
-        user_firstName: req.body.user_firstName,
-        user_lastName: req.body.user_lastName,
-        user_name: req.body.user_name,
-        user_email: req.body.user_email,
-        user_birthday: req.body.user_birthday,
-        user_bio: req.body.user_bio,
-        user_password: req.body.user_password,
-      })
-      .then((result) => {
-        res.json(result);
-      })
-      .catch(function (err) {
-        res.send(err);
-      });
+
+    if (/^(?=.*\d)(?=.*[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{6,16})$/.test(req.body.user_password)) {
+
+      db.users
+        .create({
+          user_firstName: req.body.user_firstName,
+          user_lastName: req.body.user_lastName,
+          user_name: req.body.user_name,
+          user_email: req.body.user_email,
+          user_birthday: req.body.user_birthday,
+          user_bio: req.body.user_bio,
+          user_password: req.body.user_password,
+        })
+        .then((result) => {
+          res.json(result);
+        })
+        .catch(function (err) {
+          res.send(err);
+        });
+    } else {
+      res.status(400).send("Invalid Password")
+    }
   });
 
   // searches db to match 2 queries username & password --------
   app.post("/api/login", (req, res) => {
+    
+    let userInput = req.body.user_name.toLowerCase()
+
     db.users
       .findOne({
         where: {
@@ -186,7 +202,7 @@ module.exports = (app) => {
         },
       })
       .then(function (user) {
-        if (!user) {
+        if (!user || userInput != user.user_name.toLowerCase()) {
           res.status(400).send("Invalid Login!");
         } else {
           bcrypt.compare(req.body.user_password, user.dataValues.user_password, function (
@@ -222,16 +238,30 @@ module.exports = (app) => {
 
   // edit user profile info
   app.put("/api/user/:id", (req, res) => {
-    db.users
+
+    db.users.findOne(
+      {
+        where: {
+          user_id: req.params.id
+        }
+      }
+    ).then(result => {
+      
+      let toUse = req.body
+      let results = result.dataValues
+
+        db.users
       .update(
+
         {
-          user_firstName: req.body.user_firstName,
-          user_lastName: req.body.user_lastName,
-          user_name: req.body.user_name,
-          user_email: req.body.user_email,
-          user_birthday: req.body.user_birthday,
-          user_bio: req.body.user_bio,
-          user_password: req.body.user_password,
+          user_firstName: toUse.user_firstName || results.user_firstName,
+          user_lastName: toUse.user_lastName || results.user_lastName,
+          user_name: toUse.user_name || results.user_name,
+          user_email: toUse.user_email || results.user_email,
+          user_birthday: toUse.user_birthday || results.user_birthday,
+          user_bio: toUse.user_bio || results.user_bio,
+          // user_password: toUse.user_password || results.user_password
+
         },
         {
           where: {
@@ -240,10 +270,12 @@ module.exports = (app) => {
         }
       )
       .then((result) => {
-        res.json(result);
+        res.status(200).send(result);
       })
       .catch(function (err) {
-        res.send(err);
+        res.status(400).send(err);
       });
+      }
+    )
   });
 };

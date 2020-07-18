@@ -1,6 +1,4 @@
 $( document ).ready(function() {
-    console.log( "ready!" );
-
     
     // global variables
     const postsContainer = $('#posts')
@@ -15,8 +13,8 @@ $( document ).ready(function() {
         let loginBtn = $('<button>')
         loginBtn.attr('id', 'loginBtn')
         loginBtn.attr('type', 'button')
-        loginBtn.addClass('btn btn-info')
-        loginBtn.text('Log In')
+        loginBtn.addClass('btn btn-info btn-block')
+        loginBtn.text('Login')
         $('#loginOrLogoutDiv').append(loginBtn)
     }
 
@@ -25,23 +23,56 @@ $( document ).ready(function() {
         let logoutBtn = $('<button>')
         logoutBtn.attr('id', 'logoutBtn')
         logoutBtn.attr('type', 'button')
-        logoutBtn.addClass('btn btn-info')
-        logoutBtn.text('Log Out')
+        logoutBtn.addClass('btn btn-danger btn-block')
+        logoutBtn.html('Log Out <img src="https://img.icons8.com/ios-filled/15/000000/logout-rounded.png"/>')
         $('#loginOrLogoutDiv').append(logoutBtn)
+    }
+
+    function renderSignUpButton(){
+        $('#createPorfileOrPostDiv').empty()
+        let signUpBtn = $('<button>')
+        signUpBtn.attr('type', 'button')
+        signUpBtn.attr('id', 'signUpButton')
+        signUpBtn.addClass('btn btn-info btn-block')
+        signUpBtn.html('Sign Up')
+        $('#createPorfileOrPostDiv').append(signUpBtn)
+    }
+    
+    function renderCreatePostButton(){
+        $('#createPorfileOrPostDiv').empty()
+        let createPostBtn = $('<button>')
+        createPostBtn.attr('type', 'button')
+        createPostBtn.attr('id', 'createPostButton')
+        createPostBtn.addClass('btn btn-info btn-block')
+        createPostBtn.html('Create Post')
+        $('#createPorfileOrPostDiv').append(createPostBtn)
     }
 
     if (!localStorage.getItem('user_id')){
         renderLoginButton()
+        renderSignUpButton()
         $('#loginBtn').click(function(){
             $('#loginModal').modal('show')
         })
+        $('#signUpButton').click(function(){
+            $('#signupModal').modal('show')
+        })
     } else {
         renderLogoutButton()
+        renderCreatePostButton()
         $('#logoutBtn').click(function(){
             localStorage.clear()
             location.reload()
         })
     }
+
+
+
+    /*
+    button type="button" class="btn btn-primary btn-block" id="createPostButton">
+        Create Post
+    </button>
+    */
 
     $('#loginModalBtn').click(function(){
         let userLoginInfo = {
@@ -57,19 +88,22 @@ $( document ).ready(function() {
 
     $('#signupModalBtn').click(function(){
         let userSignupInfo = {
+            user_firstName: $('#signupModalFirstName'),
+            user_lastName: $('#signupModalLastName'),
             user_name: $('#signupModalUserName').val().trim(),
-            user_password: $('#signupModalPassword').val().trim()
+            user_password: $('#signupModalPassword').val().trim(),
+            user_email: $('#signupModalEmail'),
+            user_birthday: $('#signupModalBirthday'),
+            user_bio: $('#signupModalBio')
         }
     })
 
     // Store user data to localstorage, needs to happen on login
     function storeUser(login) {
-        console.log(login)
         $.post('/api/login', {
             user_name: login.user_name,
             user_password: login.user_password
         }, function(data) {
-            console.log(data)
             if (data) {
                 localStorage.setItem('user_id', data.user_id)
             }
@@ -89,11 +123,9 @@ $( document ).ready(function() {
 
     $('#postModalSubmit').click(function(){
         let userId = $('#postModal').attr('data-user_id')
-        console.log(userId)
         $.post('api/post/' + userId, {
             post_content: $('#postModalBody').val()
         }, function(data){
-            console.log(data);
             location.reload();
         })
     })
@@ -101,21 +133,16 @@ $( document ).ready(function() {
     $(document).on('click', 'button.edit', editPost);
     $('#editPostModalSubmit').click(function(){
         let id = $(this).attr('data-id')
-        console.log($('#editPostModal').attr('data-id'))
         //if(localStorage.getItem('user_id')){
             let newPost = {
-                user_id: "43cd3286-dbd6-4c3a-a3ce-bba6f227beee",
-                // localStorage.getItem('user_id'),
+                user_id: localStorage.getItem('user_id'),
                 post_content: $('#editPostModalBody').val().trim(),
             }
-            console.log(newPost)
-            // let modalImage = $('#')
             $.ajax({
                 url: '/api/post/' + $('#editPostModal').attr('data-id'),
                 type: 'PUT',
                 data: newPost,
                 success: function(result) {
-                    console.log(result)
                     location.reload() 
                 }
             })
@@ -132,6 +159,56 @@ $( document ).ready(function() {
     }
 
     // End Create/edit post ------------------------------------------
+
+    // Create/edit comments ------------------------------------------
+/*
+
+    $(document).on('click', 'button.addComment', createComment)
+    function createComment(){
+        let id = localStorage.getItem('user_id')
+        $('#commentModal').attr('data-user_id', id)
+        $('#commentModal').modal('show')
+    }
+
+    $('#postModalSubmit').click(function(){
+        let userId = $('#postModal').attr('data-user_id')
+        $.post('api/post/' + userId, {
+            post_content: $('#postModalBody').val()
+        }, function(data){
+            location.reload();
+        })
+    })
+
+    $(document).on('click', 'button.edit', editPost);
+    $('#editPostModalSubmit').click(function(){
+        let id = $(this).attr('data-id')
+        //if(localStorage.getItem('user_id')){
+            let newPost = {
+                user_id: localStorage.getItem('user_id'),
+                post_content: $('#editPostModalBody').val().trim(),
+            }
+            $.ajax({
+                url: '/api/post/' + $('#editPostModal').attr('data-id'),
+                type: 'PUT',
+                data: newPost,
+                success: function(result) {
+                    location.reload() 
+                }
+            })
+        //}
+    })
+
+    function editPost(){
+        let id = $(this).attr('data-id')
+        let body = $(this).attr('data-body')
+        $('#editPostModal').attr('data-id', id)
+        //$('#editPostModal').attr('data-body', body)
+        $('#editPostModalBody').html(body)
+        $('#editPostModal').modal('show')
+    }
+
+*/
+    // End create/edit comments --------------------------------------
 
     // Display all posts ---------------------------------------------
 
@@ -196,13 +273,17 @@ $( document ).ready(function() {
         let newPostDroplet = $('<div>');
         
         // bootstrap classes go here for styling the whole droplet
-        newPostDroplet.addClass('rounded');
+        newPostDroplet.addClass('card my-2');
+
+        let newDropletCardBody = $('<div>')
+        newDropletCardBody.addClass('card-body')
+        newDropletCardBody.css('width: 18rem;')
         
         // div contains the top section of the droplet
         let newDropletHeader = $('<div>');
         
         // bootstrap classes go here to style the top section of the droplet
-        newDropletHeader.addClass('');
+        newDropletHeader.addClass('card-title row');
         
         // div contains the body/middle section of the droplet
         let newDropletBody = $('<div>');
@@ -211,13 +292,19 @@ $( document ).ready(function() {
         newDropletBody.text(post.post_content);
         
         // bootstrap classes go here to style the body/middle section of the droplet
-        newDropletBody.addClass('');
+        newDropletBody.addClass('card-text');
         
         // div contains the bottom section of the droplet
         let newDropletFooter = $('<div>');
         
         // bootstrap classes go here to style the bottom section of the droplet
-        newDropletFooter.addClass('');
+        newDropletFooter.addClass('card-body');
+
+        let addComment = $('<button>')
+        addComment.attr('data-post_id', post.post_id)
+        addComment.attr('data-user_id', localStorage.getItem('user_id'))
+        addComment.addClass('addComment btn btn-info')
+        addComment.text('Add Comment')
 
         // gets comments and adds them to newDropletFooter
         getComments(post.post_id).then(function(data){
@@ -230,44 +317,60 @@ $( document ).ready(function() {
             let editBtn = $('<button>');
 
             // add edit button icon html here
-            editBtn.html('Edit');
+            editBtn.html('<img src="https://img.icons8.com/carbon-copy/20/000000/pencil.png"/>');
 
             // store the post id to the edit button
             editBtn.attr('data-id', post.post_id);
             editBtn.attr('data-body', post.post_content)
 
             // bootstrap classes 
-            editBtn.addClass('edit btn btn-info');
+            editBtn.addClass('edit btn col-1 offset-sm-2 offset-md-3 offset-lg-4');
+            
+            // only the user can delete the post
+            let deleteBtn = $('<button>');
+
+            // add edit button icon html here
+            deleteBtn.html('<img src="https://img.icons8.com/ios/20/000000/delete.png"/>');
+
+            // store the post id to the edit button
+            deleteBtn.attr('data-id', post.post_id);
+
+            // bootstrap classes 
+            deleteBtn.addClass('delete btn col-1');
             
             // display time and date somewhere in small text
             let newDropletDateTime = $('<small>');
 
             // gets date/time from post data
-            let createdDate = new Date(post.date_time);
+            let createdDate = new Date(post.createdAt);
 
             // format createdDate with moment
             // createdDate = moment(createdDate).format("MMMM Do YYYY, h:mm:ss a");
 
-            newDropletDateTime.text(createdDate);
+            newDropletDateTime.html('<br>' + createdDate);
 
 
             function appendAll(){
                 // append all data to positions within the newly created row
-                console.log(localStorage.getItem('user_id'))
-                console.log(post.user_id)
                 if (localStorage.getItem('user_id') === post.user_id){
                     newDropletHeader.append(editBtn);
+                    newDropletHeader.append(deleteBtn);
                 }
-                newDropletHeader.append(newDropletDateTime)
-                newPostDroplet.append(newDropletHeader);
-                newPostDroplet.append(newDropletBody);
-                newPostDroplet.append(newDropletFooter);
+                
+                newDropletBody.append(newDropletDateTime)
+                newDropletCardBody.append(newDropletHeader);
+                newDropletCardBody.append(newDropletBody);
+                newDropletCardBody.append(newDropletFooter);
+                newPostDroplet.append(newDropletCardBody)
                 newPostDroplet.data('post', post);
             }
             if (post.user_id){
                 getUserName(post.user_id).then(function(data){
                     if (data){
-                        newDropletHeader.append(data.user_name);
+                        let dropletUserName = $('<div>')
+                        dropletUserName.addClass('font-weight-bold col-6')
+                        dropletUserName.text(data.user_name)
+                        newDropletHeader.append(dropletUserName);
                         appendAll(); 
                     } else {
                         appendAll()

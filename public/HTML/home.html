@@ -84,20 +84,17 @@
           </div>
       </div> <!-- Closes #postsCol -->
 
-      <!-- Create Post, Login/signout buttons go here-->
+      <!-- Create Post/profile, Login/signout buttons go here-->
       <div class="col-3" id="buttonsCol">
 
         <div class="row">
-          <div class="col-6">
+          <div class="col-sm-12 col-md-8 col-lg-6">
             <!-- contains create post button -->
-            <div class="create-post-button-container">
-              <!-- Button triggers Post Modal -->
-              <button type="button" class="btn btn-primary" id="createPostButton">
-                Create Post
-              </button>
+            <div class="create-post-button-container" id="createPorfileOrPostDiv">
+              <!-- create profile or create post button will go here -->
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-sm-12 col-md-8 col-lg-6">
             <!-- container to hold login or signout button dynamically added with jquery -->
             <div class="login-signout-button-container" id="loginOrLogoutDiv">
               <!-- login or signout button appears here from jQuery -->
@@ -143,28 +140,30 @@
             <!-- End of modal header -->
       
             <!-- Beginning of modal body (Post form) -->
-            <form action= "upload.php" method= "POST" enctype= "multipart/form-data">
+            <form class="container">
 
               <!-- Text area for post and image the user can upload -->
               <div class="modal-body">
 
                 <div class="form-group">
-                  <textarea style= "resize: none;" class="form-control rounded" rows="4" id="postModalBody"></textarea>
-                </div>
-                
-                <div class="form-group text-center">
-                  <label for="postModalImage">Upload an image:</label>
-                  <input style= "margin-left: 80px;" type="file" name= "image" class="form-control-file" id="postModalImage">
-                </div>
-                
-              </div>
+                  <textarea style= "resize: none; min-width: 100%;" class="form-control rounded" rows="5" id="postModalBody"></textarea>
+                </div>                 
 
-              <!-- Modal buttons for submit/cancel -->
-              <div class="modal-footer" style= "border: none;">
-                  <button style= "width: 45%;" type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                  <button style= "width: 45%; margin-left: 25px;" type="button" name= "imagebtn" class="btn btn-primary" id="postModalSubmit">Post</button>
-              </div>
+                <!-- Modal buttons for submit/cancel -->
+                <div class="modal-footer" style= "border: none;">
 
+                  <div class="container text-center">
+                    <div class="row text-center">
+                      <div class="col-6">
+                        <button type="button" class="btn btn-success btn-block" data-dismiss="modal">Cancel</button>
+                      </div>
+                      <div class="col-6">
+                        <button type="button" class="btn btn-primary btn-block" id="postModalSubmit">Post</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </form>
                       
           </div> <!-- End of post modal content-->
@@ -173,7 +172,7 @@
       </div>
       <!-- Post Modal End -->
 
-      <!-- Edit Modal Begin -->
+      <!-- Edit Post Modal Begin -->
       <div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -202,25 +201,41 @@
           </div>
         </div>
       </div>
-      <!-- Edit Modal End -->
+      <!-- Edit Post Modal End -->
         
 
     </div> <!-- Closes .row -->
   </div> <!-- Closes .container -->
 
-  <!-- Signup modal -->
+  <!----- Signup modal ----->
   <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="signupModalLabel">New user signup</h5>
+          <h5 class="modal-title" id="signupModalLabel">Signup</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <form>
-            <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="inputEmail4">First Name</label>
+                <input type="text" class="form-control" placeholder="First name">
+              </div>
+              <div class="col">
+                <label for="inputEmail4">Last Name</label>
+                <input type="text" class="form-control" placeholder="Last name">
+              </div>
+            </div>
+            <label for="birthday">Birthday:</label>
+            <input type="date" id="birthday" name="birthday">
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">Email</label>
+              <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+            </div>
+            <div class="form-group col-md-6">
               <label for="recipient-name" class="col-form-label">User Name</label>
               <input type="text" class="form-control" id="signupModalUserName">
             </div>
@@ -239,7 +254,7 @@
   </div>
 
 
-  <!-- Login modal -->
+  <!------ Login modal ------->
   <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -250,7 +265,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form class="container">
             <div class="form-group">
               <label for="recipient-name" class="col-form-label">User Name</label>
               <input type="text" class="form-control" id="loginModalUserName">
@@ -268,7 +283,107 @@
       </div>
     </div>
   </div>
+  <!----- End of Login Modal ----->
 
+  <!-- Create Comment Start -->
+  <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+  
+      <div class="modal-content">
+  
+        <!-- Beginning of modal header -->
+        <div class="modal-header" style= "border: none;"> 
+          <div class="container">
+
+            <div class="row">
+              <div class="col-md-12">
+                <!-- Have to do in-line styling otherwise the "close" bootstrap class messes things up -->
+                <button style= "margin-left: 375px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Margin top here to put a bit of space between text and X -->
+            <div style= "margin-top: 10px;" class="row">
+              <div class="col-12">
+                <h5 class="modal-title w-100 text-center" id="commentModalHeader">Comment Here!</h5>
+              </div>
+            </div>
+
+          </div>
+          
+        </div> 
+        <!-- End of modal header -->
+  
+        <!-- Beginning of modal body (Post form) -->
+        <form class="container">
+
+          <!-- Text area for post and image the user can upload -->
+          <div class="modal-body">
+
+            <div class="form-group">
+              <textarea style= "resize: none; min-width: 100%;" class="form-control rounded" rows="5" id="commentModalBody"></textarea>
+            </div>
+            
+            <!-- <div class="form-group text-center">
+              <label for="postModalImage">Upload an image:</label>
+              <input style= "margin-left: 80px;" type="file" name= "image" class="form-control-file" id="postModalImage">
+            </div> -->                 
+
+            <!-- Modal buttons for submit/cancel -->
+            <div class="modal-footer" style= "border: none;">
+
+              <div class="container text-center">
+                <div class="row text-center">
+                  <div class="col-6">
+                    <button type="button" class="btn btn-success btn-block" data-dismiss="modal">Cancel</button>
+                  </div>
+                  <div class="col-6">
+                    <button type="button" class="btn btn-primary btn-block" id="commentModalSubmit">Comment</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+                  
+      </div> <!-- End of comment modal content-->
+
+    </div>
+  </div>
+  <!-- Post Modal End -->
+
+  <!----- Edit Comment Modal ----->
+  <div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editCommentModal">Comment Editor</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <!-- <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Recipient:</label>
+              <input type="text" class="form-control" id="recipient-name">
+            </div> -->
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Edit your comment:</label>
+              <textarea class="form-control" id="editCommentModal"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="editCommentModal">Edit Comment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!----- End Edit Comment Modal ----->
 
   <!------------------------ End Modals ----------------------->
 

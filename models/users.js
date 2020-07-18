@@ -72,21 +72,13 @@ module.exports = function (sequelize, DataTypes) {
 
       user_password: {
         type: DataTypes.STRING,
-        validate: {
-          // must have at least 6 characters no more than 16
-          // must have capital and numbers
-          is: /^(?=.*\d)(?=.*[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{6,16})$/,
-          // must not be ['password', 'username', etc...]
-        },
+        set(value) {
+          const foo = this.setDataValue('user_password', bcrypt.hashSync(value, 10))
+        }
       },
     },
     {
-      freezeTableName: true,
-      hooks: {
-        afterValidate: (users, options) => {
-          users.user_password = bcrypt.hashSync(users.user_password, 10);
-        },
-      },
+      freezeTableName: true
     }
   );
 
