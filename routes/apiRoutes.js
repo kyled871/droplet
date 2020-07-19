@@ -120,7 +120,7 @@ module.exports = (app) => {
           post_id: req.params.post,
         },
         order: [
-          ['createdAt', 'DESC']
+          ['createdAt', 'ASC']
       ],
       })
       .then((comments) => {
@@ -147,6 +147,7 @@ module.exports = (app) => {
       });
   });
 
+  // edit comment via id ---------------------------
   app.put("/api/comment/:id", (req, res) => {
     db.comments
       .update(
@@ -157,7 +158,7 @@ module.exports = (app) => {
           where: {
             comment_id: req.params.id,
           },
-        }
+        }              
       )
       .then((comment) => {
         res.status(200).end();
@@ -281,4 +282,11 @@ module.exports = (app) => {
       }
     )
   });
+
+  
+
+
+
+
+
 };

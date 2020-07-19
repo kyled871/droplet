@@ -5,6 +5,7 @@ $( document ).ready(function() {
     let posts;
     let userName;
     let allComments = [];
+    let commentUserNames = [];
 
     // Log in --------------------------------------------
 
@@ -48,28 +49,32 @@ $( document ).ready(function() {
         $('#createPorfileOrPostDiv').append(createPostBtn)
     }
 
+    $(document).on('click', '#loginBtn', function(){
+        $('#loginModal').modal('show')
+    })
+
+    $(document).on('click', '#signUpButton', function(){
+        $('#signupModal').modal('show')
+    })
+    $(document).on('click', '#logoutBtn', function(){
+        localStorage.clear()
+        renderButtons()
+        getPosts()
+    })
     // Loads button to page depending on whether user is sign in or not
-    function whichButtons(){
+    function renderButtons(){
         if (!localStorage.getItem('user_id')){
             renderLoginButton()
             renderSignUpButton()
-            $('#loginBtn').click(function(){
-                $('#loginModal').modal('show')
-            })
-            $('#signUpButton').click(function(){
-                $('#signupModal').modal('show')
-            })
+            
         } else {
             renderCreatePostButton()
             renderLogoutButton()
-            $('#logoutBtn').click(function(){
-                localStorage.clear()
-                whichButtons()
-                getPosts()
-            })
+            
         }
     }
-    whichButtons()
+
+    renderButtons()
 
     $('#loginModalBtn').click(function(){
         let userLoginInfo = {
@@ -77,7 +82,7 @@ $( document ).ready(function() {
             user_password: $('#loginModalPassword').val().trim()
         }
         storeUser(userLoginInfo)
-        $('#loginModal').modal('toggle')
+
     })
 
     $('#signupModalSubmit').click(function(){
@@ -90,24 +95,21 @@ $( document ).ready(function() {
             user_birthday: $('#signupModalBirthday').val().trim(),
             user_bio: $('#signupModalBio').val().trim()
         }
-        console.log(userSignupInfo)
 
         $.post('/api/signup/', userSignupInfo, function(user) {
-            console.log(user)
             if(user){
                 storeUser({
                 user_password: userSignupInfo.user_password,
                 user_name: userSignupInfo.user_name
                 })
                 $('#signupModal').modal('toggle')
-                whichButtons()
+                renderButtons()
                 getPosts()
             }
+        }).fail(function(){
+            console.log('error')
         })
     })
-
-
-
 
     // Store user data to localstorage, needs to happen on login
     function storeUser(login) {
@@ -117,9 +119,11 @@ $( document ).ready(function() {
         }, function(data) {
             if (data) {
                 localStorage.setItem('user_id', data.user_id)
-                whichButtons()
-                getPosts()
+                location.reload()
+                $('#loginModal').modal('toggle')
             }
+        }).fail(function(){
+            console.log('error')
         })
     }
 
@@ -162,7 +166,9 @@ $( document ).ready(function() {
                 type: 'PUT',
                 data: newPost,
                 success: function(result) {
-                    // location.reload() 
+                    $('#editPostModal').modal('toggle')
+                    getPosts(); 
+
                 }
             })
         //}
@@ -177,6 +183,7 @@ $( document ).ready(function() {
         $('#editPostModal').modal('show')
     }
 
+
     // End Create/edit post ------------------------------------------
 
     // Create/edit comments ------------------------------------------
@@ -184,7 +191,6 @@ $( document ).ready(function() {
     $(document).on('click', 'button.addComment', createComment)
     
     function createComment(data){
-        console.log(data.target.attributes[0].value)
         let id = localStorage.getItem('user_id')
         $('#commentModal').attr('data-user_id', id)
         $('#commentModal').attr('data-post_id', data.target.attributes[0].value)
@@ -192,8 +198,6 @@ $( document ).ready(function() {
     }
 
     $('#commentModalSubmit').click(function(){
-
-        console.log('Clicked')
         let userId = $('#commentModal').attr('data-user_id')
         let postId = $('#commentModal').attr('data-post_id')
         $.post('api/comment/', {
@@ -208,37 +212,37 @@ $( document ).ready(function() {
             }
         })
     })
-/*
 
-    $(document).on('click', 'button.editComment', editPost);
-    $('#editPostModalSubmit').click(function(){
+    $(document).on('click', 'button.editComment', editComment);
+
+    function editComment(){
         let id = $(this).attr('data-id')
+        let body = $(this).attr('data-body')
+        $('#editCommentModal').attr('data-id', id)
+        $('#editCommentModal').attr('data-body', body)
+        $('#editCommentModalBody').html(body)
+        $('#editCommentModal').modal('show')
+    }
+
+    $('#editCommentModalSubmit').click(function(){
+        let id = $('#editCommentModal').attr('data-id')
         //if(localStorage.getItem('user_id')){
-            let newPost = {
-                user_id: localStorage.getItem('user_id'),
-                post_content: $('#editPostModalBody').val().trim(),
+            let newComment = {
+                comment_content: $('#editCommentModalBody').val().trim(),
             }
             $.ajax({
-                url: '/api/post/' + $('#editPostModal').attr('data-id'),
+                url: '/api/comment/' + id,
                 type: 'PUT',
-                data: newPost,
+                data: newComment,
                 success: function(result) {
-                    location.reload() 
+                    console.log(result)
+                    $('#editCommentModal').modal('toggle')
+                    getPosts(); 
                 }
             })
         //}
     })
 
-    function editPost(){
-        let id = $(this).attr('data-id')
-        let body = $(this).attr('data-body')
-        $('#editPostModal').attr('data-id', id)
-        //$('#editPostModal').attr('data-body', body)
-        $('#editPostModalBody').html(body)
-        $('#editPostModal').modal('show')
-    }
-
-*/
     // End create/edit comments --------------------------------------
 
     // Display all posts ---------------------------------------------
@@ -329,20 +333,45 @@ $( document ).ready(function() {
         let newDropletFooter = $('<div>');
         
         // bootstrap classes go here to style the bottom section of the droplet
-        newDropletFooter.addClass('card-body');
+        newDropletFooter.addClass('card-body mt-2');
+        newDropletFooter.css('border-top', '1px solid black')
 
         // Add comment button, only shows up if logged in       
         let addComment = $('<button>')
         addComment.attr('data-post_id', post.post_id)
         addComment.attr('data-user_id', localStorage.getItem('user_id'))
-        addComment.addClass('addComment btn btn-info')
+        addComment.addClass('addComment btn btn-info my-2')
         addComment.text('Add Comment')
+
+        // Edit comments
+        let editCommentBtn = $('<button>')
+        editCommentBtn.attr('data-post_id', post.post_id)
+        editCommentBtn.attr('data-user_id', localStorage.getItem('user_id'))
+        editCommentBtn.addClass('editComment btn mx-2')
+        editCommentBtn.html('<img src="https://img.icons8.com/carbon-copy/20/000000/pencil.png"/>')
 
         // gets comments and adds them to newDropletFooter
         getComments(post.post_id).then(function(data){
             
             for (let i = 0; i < data.length; i++){
-                newDropletFooter.append(data[i].comment_content + '<br>')
+                
+                // pushes user name associated with each comment into commentUserNames array
+                getUserName(data[i].user_id).then(function(info){
+                    commentUserNames.push(info.user_name + ' ')
+                })
+                
+                if (data[i].user_id === localStorage.getItem('user_id')){
+                    editCommentBtn.attr('data-id', data[i].comment_id)
+                    let commentContent = data[i].comment_content
+                    newDropletFooter.append(data[i].comment_content)
+
+                    newDropletFooter.append(editCommentBtn)
+                    newDropletFooter.append('<br>')
+
+                } else {
+                    newDropletFooter.append(data[i].comment_content + '<br>')
+                }
+
             }
 
             // only the user can edit the post
@@ -383,6 +412,7 @@ $( document ).ready(function() {
 
 
             function appendAll(){
+                
                 // append all data to positions within the newly created row
                 if (localStorage.getItem('user_id') === post.user_id){
                     newDropletHeader.append(editBtn);

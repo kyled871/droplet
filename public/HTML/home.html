@@ -52,8 +52,7 @@
           align-items: center;
           max-height: 600px;
           outline: none;
-        };
-        
+        };        
     </style>
 
 </head>
@@ -200,15 +199,15 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <form>
+            <div class="modal-body container">
+              <form class="container">
                 <!-- <div class="form-group">
                   <label for="recipient-name" class="col-form-label">Recipient:</label>
                   <input type="text" class="form-control" id="recipient-name">
                 </div> -->
                 <div class="form-group">
                   <label for="message-text" class="col-form-label">Edit your post:</label>
-                  <textarea class="form-control" id="editPostModalBody"></textarea>
+                  <textarea style= "resize: none;" rows= "4" class="form-control" id="editPostModalBody"></textarea>
                 </div>
               </form>
             </div>
@@ -241,39 +240,39 @@
             <div class="form-row">
               <div class="col">
                 <label for="signupModalFirstName">First Name</label>
-                <input type="text" class="form-control" id="signupModalFirstName" placeholder="First name">
+                <input type="text" class="form-control" id="signupModalFirstName" placeholder="First name" required>
               </div>
               <div class="col">
                 <label for="signupModalLastName">Last Name</label>
-                <input type="text" class="form-control" id="signupModalLastName" placeholder="Last name">
+                <input type="text" class="form-control" id="signupModalLastName" placeholder="Last name" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="col-md-6"> 
                   <label for="birthday">Birthday</label>
-                  <input class= "rounded" style= "width: 100%; height: 55%; border: 1px solid #dbdfe4;" type="date" id="signupModalBirthday" name="birthday">
+                  <input class= "rounded" style= "width: 100%; height: 55%; border: 1px solid #dbdfe4;" type="date" id="signupModalBirthday" name="birthday" required>
               </div>
                 <div class="col">
                   <label for="inputEmail4">Email</label>
-                  <input type="email" class="form-control" id="signupModalEmail" placeholder="Email">
+                  <input type="email" class="form-control" id="signupModalEmail" placeholder="Email" required>
                 </div>
             </div>
 
             <div class= "form-row">
               <div class="col">
                 <label for="recipient-name" class="col-form-label">Username</label>
-                <input type="text" class="form-control" id="signupModalUserName">
+                <input type="text" class="form-control" id="signupModalUserName" required>
               </div>
               <div class="col">
                 <label for="message-text" class="col-form-label">Password</label>
-                <input type="password" class="form-control" id="signupModalPassword"></input>
+                <input type="password" class="form-control" id="signupModalPassword" required></input>
               </div>
             </div>
 
             <div class="form-group">
               <label for="message-text" class="col-form-label">Tell Us About Yo'Self: </label>
-              <textarea style= "resize: none;" type="text" class="form-control" id="signupModalBio"></textarea>
+              <textarea style= "resize: none;" type="text" class="form-control" id="signupModalBio" required></textarea>
             </div>
           </form>
         </div>
@@ -358,8 +357,6 @@
               <textarea style= "resize: none; min-width: 100%;" class="form-control rounded" rows="5" id="commentModalBody"></textarea>
             </div>
             
-                             
-
             <!-- Modal buttons for submit/cancel -->
             <div class="modal-footer" style= "border: none;">
 
@@ -388,7 +385,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editCommentModal">Comment Editor</h5>
+          <h5 class="modal-title" id="editCommentModalTitle">Comment Editor</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -401,13 +398,13 @@
             </div> -->
             <div class="form-group">
               <label for="message-text" class="col-form-label">Edit your comment:</label>
-              <textarea class="form-control" id="editCommentModal"></textarea>
+              <textarea style= "resize: none;" class="form-control" id="editCommentModalBody"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="editCommentModal">Edit Comment</button>
+          <button type="button" class="btn btn-primary" id="editCommentModalSubmit">Edit Comment</button>
         </div>
       </div>
     </div>
