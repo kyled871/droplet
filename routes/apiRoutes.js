@@ -157,7 +157,7 @@ module.exports = (app) => {
         {
           where: {
             comment_id: req.params.id,
-          },
+          }, 
         }              
       )
       .then((comment) => {
@@ -283,7 +283,38 @@ module.exports = (app) => {
     )
   });
 
-  
+
+  // deletes comment by id --------------------------
+  app.delete("/api/comment/:id", (req, res) => {
+    db.comments.destroy({
+      where: {
+        comment_id: req.params.id
+      }
+    })
+    .then((result) =>{
+      res.status(200).end();
+    })
+    .catch( function(err) {
+      res.status(400).send(err)
+    })
+  })
+
+
+  // deletes post by id -----------------------------
+  app.delete("/api/post/:id", (req, res) => {
+    db.posts.destroy({
+      where: {
+        post_id: req.params.id
+      }
+    })
+    .then((result) =>{
+      res.status(200).end();
+    })
+    .catch( function(err) {
+      res.status(400).send(err)
+    })
+  })
+
 
 
 

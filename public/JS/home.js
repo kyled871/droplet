@@ -349,6 +349,7 @@ $( document ).ready(function() {
         editCommentBtn.attr('data-user_id', localStorage.getItem('user_id'))
         editCommentBtn.addClass('editComment btn mx-2')
         editCommentBtn.html('<img src="https://img.icons8.com/carbon-copy/20/000000/pencil.png"/>')
+        editCommentBtn.css('padding', '0')
 
         // gets comments and adds them to newDropletFooter
         getComments(post.post_id).then(function(data){
@@ -361,8 +362,11 @@ $( document ).ready(function() {
                 })
                 
                 if (data[i].user_id === localStorage.getItem('user_id')){
-                    editCommentBtn.attr('data-id', data[i].comment_id)
                     let commentContent = data[i].comment_content
+                    let commentP = $('<p>')
+                    commentP.addClass('mt-2')
+                    commentP.text(commentContent)
+                    editCommentBtn.attr('data-id', data[i].comment_id)
                     newDropletFooter.append(data[i].comment_content)
 
                     newDropletFooter.append(editCommentBtn)
