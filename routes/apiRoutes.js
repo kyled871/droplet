@@ -10,9 +10,7 @@ module.exports = (app) => {
           where: {
             user_id: req.params.user,
           },
-          order: [
-            ['createdAt', 'DESC']
-        ],
+          order: [["createdAt", "DESC"]],
         })
         .then((posts) => {
           res.json(posts);
@@ -23,9 +21,7 @@ module.exports = (app) => {
     } else {
       db.posts
         .findAll({
-          order: [
-            ['createdAt', 'DESC']
-        ],
+          order: [["createdAt", "DESC"]],
         })
         .then((posts) => {
           res.json(posts);
@@ -39,10 +35,11 @@ module.exports = (app) => {
   //creates a new post in the database
 
   app.post("/api/post/:id", (req, res) => {
-    db.posts.create({
-      user_id: req.params.id,
-      post_content: req.body.post_content,
-    })
+    db.posts
+      .create({
+        user_id: req.params.id,
+        post_content: req.body.post_content,
+      })
       .then((post) => {
         res.json(post);
       })
@@ -119,9 +116,7 @@ module.exports = (app) => {
           // user_id: req.params.user,
           post_id: req.params.post,
         },
-        order: [
-          ['createdAt', 'ASC']
-      ],
+        order: [["createdAt", "ASC"]],
       })
       .then((comments) => {
         res.json(comments);
@@ -157,8 +152,8 @@ module.exports = (app) => {
         {
           where: {
             comment_id: req.params.id,
-          }, 
-        }              
+          },
+        }
       )
       .then((comment) => {
         res.status(200).end();
@@ -170,9 +165,11 @@ module.exports = (app) => {
 
   // creates user information into db -----------
   app.post("/api/signup/", (req, res) => {
-
-    if (/^(?=.*\d)(?=.*[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{6,16})$/.test(req.body.user_password)) {
-
+    if (
+      /^(?=.*\d)(?=.*[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{6,16})$/.test(
+        req.body.user_password
+      )
+    ) {
       db.users
         .create({
           user_firstName: req.body.user_firstName,
@@ -190,14 +187,13 @@ module.exports = (app) => {
           res.send(err);
         });
     } else {
-      res.status(400).send("Invalid Password")
+      res.status(400).send("Invalid Password");
     }
   });
 
   // searches db to match 2 queries username & password --------
   app.post("/api/login", (req, res) => {
-    
-    let userInput = req.body.user_name.toLowerCase()
+    //let userInput = req.body.user_name.toLowerCase();
 
     db.users
       .findOne({
@@ -206,19 +202,20 @@ module.exports = (app) => {
         },
       })
       .then(function (user) {
-        if (!user || userInput != user.user_name.toLowerCase()) {
+        if (!user /*|| userInput != user.dataValues.user_name.toLowerCase()*/) {
           res.status(400).send("Invalid Login!");
         } else {
-          bcrypt.compare(req.body.user_password, user.dataValues.user_password, function (
-            err,
-            result
-          ) {
-            if (result) {
-              res.send(user.dataValues);
-            } else {
-              res.status(400).send("Invalid Login!");
+          bcrypt.compare(
+            req.body.user_password,
+            user.dataValues.user_password,
+            function (err, result) {
+              if (result) {
+                res.send(user.dataValues);
+              } else {
+                res.status(400).send("Invalid Login!");
+              }
             }
-          });
+          );
         }
       });
   });
@@ -242,82 +239,87 @@ module.exports = (app) => {
 
   // edit user profile info
   app.put("/api/user/:id", (req, res) => {
-
-    db.users.findOne(
-      {
+    db.users
+      .findOne({
         where: {
-          user_id: req.params.id
-        }
-      }
-    ).then(result => {
-      
-      let toUse = req.body
-      let results = result.dataValues
+          user_id: req.params.id,
+        },
+      })
+      .then((result) => {
+        let toUse = req.body;
+        let results = result.dataValues;
 
         db.users
-      .update(
+          .update(
+            {
+              user_firstName: toUse.user_firstName || results.user_firstName,
+              user_lastName: toUse.user_lastName || results.user_lastName,
+              user_name: toUse.user_name || results.user_name,
+              user_email: toUse.user_email || results.user_email,
+              user_birthday: toUse.user_birthday || results.user_birthday,
+              user_bio: toUse.user_bio || results.user_bio,
+              // user_password: toUse.user_password || results.user_password
+            },
+            {
+              where: {
+                user_id: req.params.id,
+              },
+            }
+          )
+          .then((result) => {
+            res.status(200).send(result);
+          })
+          .catch(function (err) {
+            res.status(400).send(err);
+          });
+      });
+  });
 
-        {
-          user_firstName: toUse.user_firstName || results.user_firstName,
-          user_lastName: toUse.user_lastName || results.user_lastName,
-          user_name: toUse.user_name || results.user_name,
-          user_email: toUse.user_email || results.user_email,
-          user_birthday: toUse.user_birthday || results.user_birthday,
-          user_bio: toUse.user_bio || results.user_bio,
-          // user_password: toUse.user_password || results.user_password
-
+  // deletes comment by id --------------------------
+  app.delete("/api/comment/:id", (req, res) => {
+    db.comments
+      .destroy({
+        where: {
+          comment_id: req.params.id,
         },
-        {
-          where: {
-            user_id: req.params.id,
-          },
-        }
-      )
+      })
       .then((result) => {
-        res.status(200).send(result);
+        res.status(200).end();
       })
       .catch(function (err) {
         res.status(400).send(err);
       });
-      }
-    )
   });
-
-
-  // deletes comment by id --------------------------
-  app.delete("/api/comment/:id", (req, res) => {
-    db.comments.destroy({
-      where: {
-        comment_id: req.params.id
-      }
-    })
-    .then((result) =>{
-      res.status(200).end();
-    })
-    .catch( function(err) {
-      res.status(400).send(err)
-    })
-  })
-
 
   // deletes post by id -----------------------------
   app.delete("/api/post/:id", (req, res) => {
-    db.posts.destroy({
-      where: {
-        post_id: req.params.id
-      }
-    })
-    .then((result) =>{
-      res.status(200).end();
-    })
-    .catch( function(err) {
-      res.status(400).send(err)
-    })
-  })
+    db.posts
+      .destroy({
+        where: {
+          post_id: req.params.id,
+        },
+      })
+      .then((result) => {
+        res.status(200).end();
+      })
+      .catch(function (err) {
+        res.status(400).send(err);
+      });
+  });
 
-
-
-
-
-
+  // deletes user by id -----------------------------
+  app.delete("/api/user/:id", (req, res) => {
+    db.users
+      .destroy({
+        where: {
+          user_id: req.params.id,
+        },
+      })
+      .then((result) => {
+        res.status(200).end();
+      })
+      .catch(function (err) {
+        res.status(400).send(err);
+      });
+  });
 };
