@@ -73,18 +73,26 @@ module.exports = function (sequelize, DataTypes) {
       user_password: {
         type: DataTypes.STRING,
         set(value) {
-          const foo = this.setDataValue('user_password', bcrypt.hashSync(value, 10))
-        }
+          const foo = this.setDataValue(
+            "user_password",
+            bcrypt.hashSync(value, 10)
+          );
+        },
       },
     },
     {
-      freezeTableName: true
+      freezeTableName: true,
     }
   );
 
-  // Users.associate = function(models) {
-  //     Users.hasMany(models.comments, {foreignKey: "comment_id"})
-  //     Users.hasMany(models.posts,  {foreignKey: "post_id"})
-  // }
+  Users.associate = function (models) {
+    Users.hasMany(models.comments, {
+      foreignKey: { name: "user_id" },
+    });
+    Users.hasMany(models.posts, {
+      foreignKey: { name: "user_id" },
+    });
+  };
+
   return Users;
 };
