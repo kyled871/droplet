@@ -372,10 +372,8 @@
               </div>
             </div>
           </div>
-        </form>
-                  
+        </form>         
       </div> <!-- End of comment modal content-->
-
     </div>
   </div>
   <!-- Comment Modal End -->
@@ -392,10 +390,6 @@
         </div>
         <div class="modal-body container">
           <form>
-            <!-- <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Recipient:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </div> -->
             <div class="form-group container">
               <label for="message-text" class="col-form-label">Edit your comment:</label>
               <textarea style= "resize: none;" rows= "4" class="form-control" id="editCommentModalBody"></textarea>
@@ -410,6 +404,66 @@
     </div>
   </div>
   <!----- End Edit Comment Modal ----->
+
+  <!-- Confirm Delete Modal -->
+  
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+        <!-- Modal header -->
+        <div class="modal-header" style= "border: none;"> 
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <!-- Have to do in-line styling otherwise the "close" bootstrap class messes things up -->
+                <button style= "margin-left: 375px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Margin top here to put a bit of space between text and X -->
+            <div style= "margin-top: 10px;" class="row">
+              <div class="col-12">
+                <h5 class="modal-title w-100 text-center" id="confirmDeleteTitle">Confirm Deletion</h5>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <!-- End of modal header -->
+  
+        <!-- Modal body -->
+        <form class="container">
+
+          <div class="modal-body">
+
+            <div class="form-group">
+              <h1>This action is permanent and can NOT be undone. Are you sure you want to delete this?</h1>
+            </div>                 
+
+            <!-- Modal buttons for submit/cancel -->
+            <div class="modal-footer" style= "border: none;">
+
+              <div class="container text-center">
+                <div class="row text-center">
+                  <div class="col-6">
+                    <button type="button" class="btn btn-info btn-block" data-dismiss="modal">Cancel</button>
+                  </div>
+                  <div class="col-6">
+                    <button type="button" class="btn btn-danger btn-block" id="confirmDeleteSubmit">Delete</button>
+                  </div>
+                </div>
+              </div>
+
+            </div> <!-- Close .modal-footer -->
+          </div> <!-- Close .modal-body -->
+        </form>   
+      </div> <!-- Close .modal-content-->
+    </div> <!-- Close .modal-dialog -->
+  </div> <!-- Close #confirmDeleteModal -->
+
+  <!-- End confirm Delete Modal -->
 
   <!------------------------ End Modals ----------------------->
 
