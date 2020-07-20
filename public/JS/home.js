@@ -131,14 +131,17 @@ $( document ).ready(function() {
 
     // Create/edit post ---------------------------------------
 
+    // event handler for CREATE post button
     $('#createPostButton').on('click', createPost)
     
+    // function to handle CREATE post function
     function createPost(){
         let id = localStorage.getItem('user_id')
         $('#postModal').attr('data-user_id', id)
         $('#postModal').modal('show')
     }
 
+    // event handler for post modal SUBMIT button
     $('#postModalSubmit').click(function(){
         let userId = $('#postModal').attr('data-user_id')
         $.post('api/post/' + userId, {
@@ -153,27 +156,26 @@ $( document ).ready(function() {
         })
     })
 
+    // event handler for EDIT post button
     $(document).on('click', 'button.edit', editPost);
     $('#editPostModalSubmit').click(function(){
         let id = $(this).attr('data-id')
-        //if(localStorage.getItem('user_id')){
-            let newPost = {
-                user_id: localStorage.getItem('user_id'),
-                post_content: $('#editPostModalBody').val().trim(),
+        let newPost = {
+            user_id: localStorage.getItem('user_id'),
+            post_content: $('#editPostModalBody').val().trim(),
+        }
+        $.ajax({
+            url: '/api/post/' + $('#editPostModal').attr('data-id'),
+            type: 'PUT',
+            data: newPost,
+            success: function(result) {
+                $('#editPostModal').modal('toggle')
+                getPosts(); 
             }
-            $.ajax({
-                url: '/api/post/' + $('#editPostModal').attr('data-id'),
-                type: 'PUT',
-                data: newPost,
-                success: function(result) {
-                    $('#editPostModal').modal('toggle')
-                    getPosts(); 
-
-                }
-            })
-        //}
+        })
     })
 
+    // function to handle the post EDIT
     function editPost(){
         let id = $(this).attr('data-id')
         let body = $(this).attr('data-body')
@@ -188,8 +190,10 @@ $( document ).ready(function() {
 
     // Create/edit comments ------------------------------------------
 
+    // event handler for CREATE comment button 
     $(document).on('click', 'button.addComment', createComment)
     
+    // function handles CREATE comment process
     function createComment(data){
         let id = localStorage.getItem('user_id')
         $('#commentModal').attr('data-user_id', id)
@@ -197,6 +201,7 @@ $( document ).ready(function() {
         $('#commentModal').modal('show')
     }
 
+    // event handler for create comment modal SUBMIT button
     $('#commentModalSubmit').click(function(){
         let userId = $('#commentModal').attr('data-user_id')
         let postId = $('#commentModal').attr('data-post_id')
@@ -213,8 +218,10 @@ $( document ).ready(function() {
         })
     })
 
+    // event handler for EDIT comment button
     $(document).on('click', 'button.editComment', editComment);
 
+    // function handles EDIT comment process
     function editComment(){
         let id = $(this).attr('data-id')
         let body = $(this).attr('data-body')
@@ -224,23 +231,22 @@ $( document ).ready(function() {
         $('#editCommentModal').modal('show')
     }
 
+    // event handler for edit comment modal SUBMIT button
     $('#editCommentModalSubmit').click(function(){
         let id = $('#editCommentModal').attr('data-id')
-        //if(localStorage.getItem('user_id')){
-            let newComment = {
-                comment_content: $('#editCommentModalBody').val().trim(),
+        let newComment = {
+            comment_content: $('#editCommentModalBody').val().trim(),
+        }
+        $.ajax({
+            url: '/api/comment/' + id,
+            type: 'PUT',
+            data: newComment,
+            success: function(result) {
+                console.log(result)
+                $('#editCommentModal').modal('toggle')
+                getPosts(); 
             }
-            $.ajax({
-                url: '/api/comment/' + id,
-                type: 'PUT',
-                data: newComment,
-                success: function(result) {
-                    console.log(result)
-                    $('#editCommentModal').modal('toggle')
-                    getPosts(); 
-                }
-            })
-        //}
+        })
     })
 
     // End create/edit comments --------------------------------------
