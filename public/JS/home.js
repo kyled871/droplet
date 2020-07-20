@@ -102,9 +102,10 @@ $( document ).ready(function() {
                 user_password: userSignupInfo.user_password,
                 user_name: userSignupInfo.user_name
                 })
-                $('#signupModal').modal('toggle')
+                /*$('#signupModal').modal('toggle')
                 renderButtons()
-                getPosts()
+                getPosts()*/
+                console.log(user)
             }
         }).fail(function(){
             console.log('error')
@@ -119,8 +120,8 @@ $( document ).ready(function() {
         }, function(data) {
             if (data) {
                 localStorage.setItem('user_id', data.user_id)
-                location.reload()
-                $('#loginModal').modal('toggle')
+                //location.reload()
+                console.log(data)
             }
         }).fail(function(){
             console.log('error')
@@ -251,6 +252,39 @@ $( document ).ready(function() {
 
     // End create/edit comments --------------------------------------
 
+    // Delete post/comment/user --------------------------------------
+    
+    // event handler for DELETE post button
+    $(document).on('click', 'button.deletePost', deletePost);
+
+    // function handles DELETE post process
+    function deletePost(){
+        let currentPost = $(this).attr('data-id')
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/post/' + currentPost
+        }).then(function(){
+            getPosts()
+        })
+    } // Still needs confirm modal triggered, ajax goes inside confirm modal submit button even handler
+    
+    $(document).on('click', 'button.deleteComment', deleteComment);
+
+    // function handles DELETE post process
+    function deleteComment(){
+        let currentComment = $(this).attr('data-id')
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/comment/' + currentComment
+        }).then(function(){
+            getPosts()
+        })
+    } // Still needs confirm modal triggered, ajax goes inside confirm modal submit button even handler
+
+
+
+    // End delete post/comment/user --------------------------------------
+
     // Display all posts ---------------------------------------------
 
     // get the post data from the posts table of the droplet database
@@ -356,6 +390,14 @@ $( document ).ready(function() {
         editCommentBtn.addClass('editComment btn mx-2')
         editCommentBtn.html('<img src="https://img.icons8.com/carbon-copy/20/000000/pencil.png"/>')
         editCommentBtn.css('padding', '0')
+        
+        // Delete comments
+        let deleteCommentBtn = $('<button>')
+        deleteCommentBtn.attr('data-post_id', post.post_id)
+        deleteCommentBtn.attr('data-user_id', localStorage.getItem('user_id'))
+        deleteCommentBtn.addClass('deleteComment btn mx-2')
+        deleteCommentBtn.html('<img src="https://img.icons8.com/ios/20/000000/delete.png"/>')
+        deleteCommentBtn.css('padding', '0')
 
         // gets comments and adds them to newDropletFooter
         getComments(post.post_id).then(function(data){
@@ -368,14 +410,13 @@ $( document ).ready(function() {
                 })
                 
                 if (data[i].user_id === localStorage.getItem('user_id')){
-                    let commentContent = data[i].comment_content
-                    let commentP = $('<p>')
-                    commentP.addClass('mt-2')
-                    commentP.text(commentContent)
+                    
                     editCommentBtn.attr('data-id', data[i].comment_id)
+                    deleteCommentBtn.attr('data-id', data[i].comment_id)
                     newDropletFooter.append(data[i].comment_content)
 
                     newDropletFooter.append(editCommentBtn)
+                    newDropletFooter.append(deleteCommentBtn)
                     newDropletFooter.append('<br>')
 
                 } else {
@@ -400,14 +441,14 @@ $( document ).ready(function() {
             // only the user can delete the post
             let deleteBtn = $('<button>');
 
-            // add edit button icon html here
+            // add delete button icon html here
             deleteBtn.html('<img src="https://img.icons8.com/ios/20/000000/delete.png"/>');
 
-            // store the post id to the edit button
+            // store the post id to the delete button
             deleteBtn.attr('data-id', post.post_id);
 
             // bootstrap classes 
-            deleteBtn.addClass('delete btn col-1');
+            deleteBtn.addClass('deletePost btn col-1');
             
             // display time and date somewhere in small text
             let newDropletDateTime = $('<small>');
