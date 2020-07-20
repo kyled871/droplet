@@ -28,6 +28,11 @@ module.exports = function (sequelize, DataTypes) {
       foreignKey: { name: "post_id" },
       onDelete: "cascade",
     });
+
+    Comments.belongsTo(models.users, {
+      foreignKey: { name: "user_id" },
+      onDelete: "cascade",
+    })
   };
 
   return Comments;

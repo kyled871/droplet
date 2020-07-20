@@ -102,10 +102,9 @@ $( document ).ready(function() {
                 user_password: userSignupInfo.user_password,
                 user_name: userSignupInfo.user_name
                 })
-                /*$('#signupModal').modal('toggle')
+                $('#signupModal').modal('toggle')
                 renderButtons()
-                getPosts()*/
-                console.log(user)
+                getPosts()
             }
         }).fail(function(){
             console.log('error')
@@ -120,8 +119,7 @@ $( document ).ready(function() {
         }, function(data) {
             if (data) {
                 localStorage.setItem('user_id', data.user_id)
-                //location.reload()
-                console.log(data)
+                location.reload()
             }
         }).fail(function(){
             console.log('error')
@@ -260,12 +258,18 @@ $( document ).ready(function() {
     // function handles DELETE post process
     function deletePost(){
         let currentPost = $(this).attr('data-id')
-        $.ajax({
-            method: 'DELETE',
-            url: '/api/post/' + currentPost
-        }).then(function(){
-            getPosts()
+        $('#confirmDeleteModal').attr('data-id', currentPost)
+        $('#confirmDeleteModal').modal('show')
+        $('#confirmDeleteSubmit').click(function(){
+            $.ajax({
+                method: 'DELETE',
+                url: '/api/post/' + currentPost
+            }).then(function(){
+                $('#confirmDeleteModal').modal('toggle')
+                getPosts()
+            })
         })
+        
     } // Still needs confirm modal triggered, ajax goes inside confirm modal submit button even handler
     
     $(document).on('click', 'button.deleteComment', deleteComment);
@@ -404,23 +408,20 @@ $( document ).ready(function() {
             
             for (let i = 0; i < data.length; i++){
                 
-                // pushes user name associated with each comment into commentUserNames array
-                getUserName(data[i].user_id).then(function(info){
-                    commentUserNames.push(info.user_name + ' ')
-                })
-                
                 if (data[i].user_id === localStorage.getItem('user_id')){
-                    
                     editCommentBtn.attr('data-id', data[i].comment_id)
                     deleteCommentBtn.attr('data-id', data[i].comment_id)
-                    newDropletFooter.append(data[i].comment_content)
 
+                    newDropletFooter.append(data[i].user.user_name);
+                    newDropletFooter.append(data[i].comment_content)
                     newDropletFooter.append(editCommentBtn)
                     newDropletFooter.append(deleteCommentBtn)
                     newDropletFooter.append('<br>')
 
                 } else {
+                    newDropletFooter.append(data[i].user.user_name);
                     newDropletFooter.append(data[i].comment_content + '<br>')
+                    newDropletFooter.append(data[i].user_name);
                 }
 
             }
@@ -479,25 +480,18 @@ $( document ).ready(function() {
                 newPostDroplet.append(newDropletCardBody)
                 newPostDroplet.data('post', post);
             }
+            
             if (post.user_id){
-                getUserName(post.user_id).then(function(data){
-                    if (data){
-                        let dropletUserName = $('<div>')
-                        dropletUserName.addClass('font-weight-bold col-6')
-                        dropletUserName.text(data.user_name)
-                        newDropletHeader.append(dropletUserName);
-                        appendAll(); 
-                    } else {
-                        appendAll()
-                    }
-                })
+                let dropletUserName = $('<div>')
+                dropletUserName.addClass('font-weight-bold col-6')
+                dropletUserName.text(post.user.user_name)
+                newDropletHeader.append(dropletUserName);
+                appendAll();
             } else {
                 appendAll();
             }    
         })
         return newPostDroplet;
     }
-
     // End display all posts ----------------------------------------
-
 }); // Close document ready function
