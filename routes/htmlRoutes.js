@@ -8,7 +8,7 @@ module.exports = (app) => {
     });
 
     // view profile page ------
-    app.get('/profile', (req, res) => {
+    app.get('/profile/:user?', (req, res) => {
         res.sendFile(path.join(__dirname, "../public/HTML/viewProfile.html"))
     });
 
