@@ -14,3 +14,19 @@ body {
     min-height: 100%;
     /* border: 3px solid red; */
 }
+/* https://codepad.co/snippet/placeholder-hack-for-input-type-date-element */
+input[type="date"]::before { 
+	content: attr(data-placeholder);
+    width: 100%;
+    color: #7d8185;
+}
+
+/* hide our custom/fake placeholder text when in focus to show the default
+ * 'mm/dd/yyyy' value and when valid to show the users' date of birth value.
+ */
+input[type="date"]:focus::before,
+input[type="date"]:valid::before { display: none }
+
+input[type="date"]:focus {
+    border-color: #9ecdff !important;
+}

@@ -106,8 +106,12 @@ $( document ).ready(function() {
                 renderButtons()
                 getPosts()
             }
-        }).fail(function(){
-            console.log('error')
+        }).fail(function(error){
+            $('#signupError').text(error.responseText)
+            $('.closeSignup').click(function(){
+                $('#signupError').text('')
+
+            })
         })
     })
 
@@ -122,8 +126,11 @@ $( document ).ready(function() {
                 location.reload()
             }
         }).fail(function(error){
-            console.log(error.responseText)
             $('#loginError').text(error.responseText)
+            $('.closeLogin').click(function(){
+                $('#loginError').text('')
+
+            })
         })
     }
 
@@ -358,7 +365,7 @@ $( document ).ready(function() {
         let newPostDroplet = $('<div>');
         
         // bootstrap classes go here for styling the whole droplet
-        newPostDroplet.addClass('card my-2');
+        newPostDroplet.addClass('card my-4');
 
         let newDropletCardBody = $('<div>')
         newDropletCardBody.addClass('card-body')

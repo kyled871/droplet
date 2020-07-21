@@ -30,8 +30,8 @@
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="homePage.html"><img src="assets/Images/dropletIcon.png" width="30" height="30"
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><img src="assets/Images/dropletIcon.png" width="30" height="30"
         class="d-inline-block align-top" alt="">
         droplet</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -42,11 +42,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Log In  <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href= "/profile">My Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href= "/profile">My Profile</a>
+                <a class="nav-link" href="/">Games  <span class="sr-only">(current)</span></a>
             </li>
+            
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="search by username" aria-label="Search">
@@ -55,7 +56,7 @@
             </button>
         </form>
     </div>
-  </nav>
+  </nav> -->
     
   <div class="container pt-3">
     
@@ -75,7 +76,7 @@
       <!-- Create Post/profile, Login/signout buttons go here-->
       <div class="col-3" id="buttonsCol">
 
-        <div class="row m-2">
+        <div class="row my-4 mx-2">
           <div class="col-sm-12 col-md-8 col-lg-6">
             <!-- contains create post button -->
             <div class="create-post-button-container" id="createPorfileOrPostDiv">
@@ -186,12 +187,12 @@
   </div> <!-- Closes .container -->
 
   <!----- Signup modal ----->
-  <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal fade" id="signupModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" id= 'modal-content1'>
         <div class="modal-header">
           <h5 class="modal-title" id="signupModalLabel">Your Info for Sale</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close closeSignup" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -212,7 +213,7 @@
             <div class="form-row mt-2">
               <div class="col-md-6"> 
                   <label for="birthday">Birthday</label>
-                  <input class= "rounded pl-2" style= "width: 100%; height: 55%; border: 1px solid #dbdfe4;" type="date" id="signupModalBirthday" name="birthday" required>
+                  <input class= "rounded pl-2 form-control" style= "width: 100%; height: 55%; border: 1px solid #dbdfe4;" type="date" id="signupModalBirthday" name="birthday" data-placeholder="Date of birth" required aria-required="true">
               </div>
                 <div class="col">
                   <label for="inputEmail4">Email</label>
@@ -223,22 +224,23 @@
             <div class= "form-row mt-2">
               <div class="col">
                 <label for="recipient-name" class="col-form-label">Username</label>
-                <input type="text" class="form-control" id="signupModalUserName" required>
+                <input type="text" class="form-control" id="signupModalUserName" placeholder= "Username" required>
               </div>
               <div class="col">
                 <label for="message-text" class="col-form-label">Password</label>
-                <input type="password" class="form-control" id="signupModalPassword" required></input>
+                <input type="password" class="form-control" id="signupModalPassword" placeholder= "Password" required></input>
               </div>
             </div>
 
             <div class="form-group">
               <label for="message-text" class="col-form-label">Tell Us About Yo'Self: </label>
-              <textarea style= "resize: none;" type="text" class="form-control" id="signupModalBio" required></textarea>
+              <textarea style= "resize: none;" type="text" class="form-control" id="signupModalBio" placeholder= "Come here often?" required></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <small class="text-danger font-weight-bold" id="signupError"></small>
+          <button type="button" class="btn btn-secondary closeSignup" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" id="signupModalSubmit">Signup</button>
         </div>
       </div>
@@ -247,31 +249,31 @@
 
 
   <!------ Login modal ------->
-  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal fade" id="loginModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="loginModalLabel">Enter your login information</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close closeLogin" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <form class="container">
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">User Name</label>
-              <input type="text" class="form-control" id="loginModalUserName">
+              <label for="recipient-name" class="col-form-label">Username</label>
+              <input type="text" placeholder= "Username" class="form-control" id="loginModalUserName">
             </div>
             <div class="form-group">
               <label for="message-text" class="col-form-label">Password</label>
-              <input type="password" class="form-control" id="loginModalPassword"></input>
+              <input type="password" placeholder= "Password" class="form-control" id="loginModalPassword"></input>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <small class="text-danger font-weight-bold" id="loginError"></small>
+          <button type="button" class="btn btn-secondary closeLogin" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" id="loginModalBtn">Login</button>
-          <small id="loginError"></small>
         </div>
       </div>
     </div>
