@@ -502,7 +502,7 @@ $( document ).ready(function() {
                 let dropletUserName = $('<div>')
                 dropletUserName.addClass('font-weight-bold col-6')
                 let dropletUserNameA = $('<a>')
-                dropletUserNameA.attr('href', '/profile/' + post.user.user_name)
+                dropletUserNameA.attr('href', '/profile/' + post.user_id)
                 dropletUserNameA.text(post.user.user_name)
                 dropletUserName.append(dropletUserNameA)
                 newDropletHeader.append(dropletUserName);

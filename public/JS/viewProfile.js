@@ -1,14 +1,23 @@
 $(document).ready(function() {
     console.log( "ready!" );
 
-    let thisUser = localStorage.getItem('user_id');
+    let chosenUser;
+    let pathArr = window.location.pathname.split('/');
+    console.log(pathArr[pathArr.length - 1])
+
+    if (pathArr[pathArr.length - 1] === 'profile'){
+        chosenUser = localStorage.getItem('user_id');
+    } else {
+        chosenUser = pathArr[pathArr.length - 1]
+    }
+
 
     // set and style main content div
     let profileContent = $("#viewProfileContent");
     profileContent.addClass('');
 
     function renderProfile() {
-        $.get('/api/user/' + thisUser, function(data) {
+        $.get('/api/user/' + chosenUser, function(data) {
             // create and style username
             let username = $('<div>');
             username.addClass('');
@@ -51,7 +60,7 @@ $(document).ready(function() {
     
     
     function renderPosts() {
-        $.get('/api/posts/' + thisUser, function(data) {
+        $.get('/api/posts/' + chosenUser, function(data) {
             
             let postSection = $('<div>');
             postSection.addClass('');
