@@ -1,21 +1,49 @@
 $(document).ready(function() {
     console.log( "ready!" );
 
-    let thisUser = localStorage.getItem('user_id')
-    
+    let thisUser = localStorage.getItem('user_id');
+
+    // set and style main content div
+    let profileContent = $("#viewProfileContent");
+    profileContent.addClass('');
+
     function renderProfile() {
         $.get('/api/user/' + thisUser, function(data) {
+            // create and style username
+            let username = $('<div>');
+            username.addClass('');
+            let usernameH = $('<h1>').text(data.user_name);
+            usernameH.addClass('');
+            username.append(usernameH)
 
-            let username = $('<div>').text(data.user_name)
-            let name = $('<div>').text(data.user_firstName + data.user_lastName)
-            let bio = $('<div>').text(data.user_bio)
-            let bdayFormat = dayjs(data.user_birthday).add(1, 'day').format("MM-DD-YYYY")
-            let bday = $('<div>').text(bdayFormat)
-            $("#viewProfileContent").append(username, name, bio, bday)
+            // create and style name
+            let name = $('<div>');
+            name.addClass('');
+            let nameH = $('<h2>').text(data.user_firstName + ' ' + data.user_lastName);
+            nameH.addClass('');
+            name.append(nameH)
+
+            // create and style user bio
+            let bio = $('<div>');
+            bio.addClass('');
+            let bioP = $('<p>').text(data.user_bio);
+            bioP.addClass('');
+            bio.append(bioP)
+
+            // create, format, and style user birthday
+            let bdayFormat = dayjs(data.user_birthday).add(1, 'day').format("MM-DD-YYYY");
+            let bday = $('<small>');
+            bday.addClass('');
+            let bdayP = $('<p>').text(bdayFormat);
+            bdayP.addClass('');
+            bday.append(bdayP)
+
+
+            profileContent.append(username, name, bday, bio);
+            renderPosts();
 
         });
 
-        renderPosts()
         
     }
     
