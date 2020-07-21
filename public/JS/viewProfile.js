@@ -53,20 +53,23 @@ $(document).ready(function() {
     function renderPosts() {
         $.get('/api/posts/' + thisUser, function(data) {
             
-            let postSection = $('<div>')
-            postSection.text('Posts: ')
-            postSection.attr('id', 'postSection')
-            $('#viewProfileContent').append(postSection)
-            postSection.append('<br>')
+            let postSection = $('<div>');
+            postSection.addClass('');
+            let postSectionH = $('<h2>').text('Posts: ');
+            postSectionH.addClass('');
+            postSection.append(postSectionH);
 
             for (i = 0; i < data.length; i++) {
 
-                let posts = $('<div>').text(data[i].post_content)
-                $('#postSection').append(posts)
-                renderComments(data[i].post_id)
-
+                let posts = $('<div>');
+                let postsP = $('<p>').text(data[i].post_content);
+                posts.prepend(postsP)
+                postSection.append(posts);
+                renderComments(data[i].post_id);
 
             }
+
+            $('#viewProfileContent').append(postSection);
 
         })
     }
@@ -76,8 +79,8 @@ $(document).ready(function() {
 
             for (i = 0; i < data.length; i++) {
 
-                let comments = $('<div>').text(data[i].comment_content)
-                $('#postSection').append(comments)
+                let comments = $('<div>').text(data[i].comment_content);
+                $('#postSection').append(comments);
 
             }
             

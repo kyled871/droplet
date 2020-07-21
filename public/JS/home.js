@@ -338,16 +338,6 @@ $( document ).ready(function() {
         postsContainer.append(allPosts)
     }
 
-    // Retrieve user_name from database related to user_id specified
-    function getUserName(userId){
-        return $.get('api/user/' + userId, function(data){
-            if (data){
-                userName = data.user_name;
-            }
-            return userName;
-        })
-    }
-
     // Retrieve comments from database related to single post_id specified
     function getComments(postId){ 
         return $.get('/api/comments/' + postId, function(data){
@@ -361,6 +351,7 @@ $( document ).ready(function() {
 
     // create the rows to populate postsContainer
     function createNewRow(post){
+
         // div contains the whole post droplet
         let newPostDroplet = $('<div>');
         
@@ -510,10 +501,17 @@ $( document ).ready(function() {
             if (post.user_id){
                 let dropletUserName = $('<div>')
                 dropletUserName.addClass('font-weight-bold col-6')
-                dropletUserName.text(post.user.user_name)
+                let dropletUserNameA = $('<a>')
+                dropletUserNameA.attr('href', '/profile/' + post.user.user_name)
+                dropletUserNameA.text(post.user.user_name)
+                dropletUserName.append(dropletUserNameA)
                 newDropletHeader.append(dropletUserName);
                 appendAll();
             } else {
+                let dropletUserName = $('<div>')
+                dropletUserName.addClass('font-weight-bold col-6')
+                dropletUserName.text('Deleted')
+                newDropletHeader.append(dropletUserName);
                 appendAll();
             }    
         })
