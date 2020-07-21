@@ -198,6 +198,7 @@ $( document ).ready(function() {
         $('#commentModal').attr('data-user_id', id)
         $('#commentModal').attr('data-post_id', data.target.attributes[0].value)
         $('#commentModal').modal('show')
+        $('#commentModalBody').focus()
     }
 
     // event handler for create comment modal SUBMIT button
@@ -223,7 +224,7 @@ $( document ).ready(function() {
     // function handles EDIT comment process
     function editComment(){
         let id = $(this).attr('data-id')
-        let body = $(this).attr('data-body')
+        let body = $(this).attr('data-content')
         $('#editCommentModal').attr('data-id', id)
         $('#editCommentModal').attr('data-body', body)
         $('#editCommentModalBody').html(body)
@@ -277,11 +278,16 @@ $( document ).ready(function() {
     // function handles DELETE post process
     function deleteComment(){
         let currentComment = $(this).attr('data-id')
-        $.ajax({
-            method: 'DELETE',
-            url: '/api/comment/' + currentComment
-        }).then(function(){
-            getPosts()
+        $('#confirmDeleteModal').attr('data-id', currentComment)
+        $('#confirmDeleteModal').modal('show')
+        $('#confirmDeleteSubmit').click(function(){
+            $.ajax({
+                method: 'DELETE',
+                url: '/api/comment/' + currentComment
+            }).then(function(){
+                $('#confirmDeleteModal').modal('toggle')
+                getPosts()
+            })
         })
     } // Still needs confirm modal triggered, ajax goes inside confirm modal submit button even handler
 
@@ -387,42 +393,55 @@ $( document ).ready(function() {
         addComment.addClass('addComment btn btn-info my-2')
         addComment.text('Add Comment')
 
-        // Edit comments
-        let editCommentBtn = $('<button>')
-        editCommentBtn.attr('data-post_id', post.post_id)
-        editCommentBtn.attr('data-user_id', localStorage.getItem('user_id'))
-        editCommentBtn.addClass('editComment btn mx-2')
-        editCommentBtn.html('<img src="https://img.icons8.com/carbon-copy/20/000000/pencil.png"/>')
-        editCommentBtn.css('padding', '0')
         
-        // Delete comments
-        let deleteCommentBtn = $('<button>')
-        deleteCommentBtn.attr('data-post_id', post.post_id)
-        deleteCommentBtn.attr('data-user_id', localStorage.getItem('user_id'))
-        deleteCommentBtn.addClass('deleteComment btn mx-2')
-        deleteCommentBtn.html('<img src="https://img.icons8.com/ios/20/000000/delete.png"/>')
-        deleteCommentBtn.css('padding', '0')
 
         // gets comments and adds them to newDropletFooter
         getComments(post.post_id).then(function(data){
             
             for (let i = 0; i < data.length; i++){
                 
+                
+
+                // Edit comments
+                let editCommentBtn = $('<button>')
+                editCommentBtn.attr('data-post_id', post.post_id)
+                editCommentBtn.attr('data-user_id', localStorage.getItem('user_id'))
+                editCommentBtn.addClass('editComment btn mx-2')
+                editCommentBtn.html('<img src="https://img.icons8.com/carbon-copy/20/000000/pencil.png"/>')
+                editCommentBtn.css('padding', '0')
+
+                // Delete comments
+                let deleteCommentBtn = $('<button>')
+                deleteCommentBtn.attr('data-post_id', post.post_id)
+                deleteCommentBtn.attr('data-user_id', localStorage.getItem('user_id'))
+                deleteCommentBtn.addClass('deleteComment btn mx-2')
+                deleteCommentBtn.html('<img src="https://img.icons8.com/ios/20/000000/delete.png"/>')
+                deleteCommentBtn.css('padding', '0')
+
+                // comment username and content
+                let commentDiv = $('<div>')
+                commentDiv.addClass('m-2 border py-2')
+                let usernameDiv = $('<div>')
+                usernameDiv.addClass('m-2 font-weight-bold')
+                let commentContentDiv = $('<div>')
+                commentContentDiv.addClass('m-2')
+                editCommentBtn.attr('data-id', data[i].comment_id)
+                editCommentBtn.attr('data-content', data[i].comment_content)
+                deleteCommentBtn.attr('data-id', data[i].comment_id)
+
+                // append comment to footer
+                usernameDiv.append(data[i].user.user_name);
+                commentDiv.append(usernameDiv);
+                commentContentDiv.append(data[i].comment_content)
+                commentDiv.append(commentContentDiv)
                 if (data[i].user_id === localStorage.getItem('user_id')){
-                    editCommentBtn.attr('data-id', data[i].comment_id)
-                    deleteCommentBtn.attr('data-id', data[i].comment_id)
-
-                    newDropletFooter.append(data[i].user.user_name);
-                    newDropletFooter.append(data[i].comment_content)
-                    newDropletFooter.append(editCommentBtn)
-                    newDropletFooter.append(deleteCommentBtn)
-                    newDropletFooter.append('<br>')
-
-                } else {
-                    newDropletFooter.append(data[i].user.user_name);
-                    newDropletFooter.append(data[i].comment_content + '<br>')
-                    newDropletFooter.append(data[i].user_name);
+                    usernameDiv.append(editCommentBtn)
                 }
+                if (data[i].user_id === localStorage.getItem('user_id') || post.user_id === localStorage.getItem('user_id')){
+                    usernameDiv.append(deleteCommentBtn)
+                }
+                
+                newDropletFooter.append(commentDiv)
 
             }
 
