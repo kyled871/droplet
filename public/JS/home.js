@@ -35,7 +35,7 @@ $( document ).ready(function() {
         signUpBtn.attr('type', 'button')
         signUpBtn.attr('id', 'signUpButton')
         signUpBtn.addClass('btn btn-info btn-block')
-        signUpBtn.html('Sign Up')
+        signUpBtn.text('Sign Up')
         $('#createPorfileOrPostDiv').append(signUpBtn)
     }
     
@@ -45,7 +45,7 @@ $( document ).ready(function() {
         createPostBtn.attr('type', 'button')
         createPostBtn.attr('id', 'createPostButton')
         createPostBtn.addClass('btn btn-info btn-block')
-        createPostBtn.html('Create Post')
+        createPostBtn.text('Create Post')
         $('#createPorfileOrPostDiv').append(createPostBtn)
     }
 
@@ -121,8 +121,9 @@ $( document ).ready(function() {
                 localStorage.setItem('user_id', data.user_id)
                 location.reload()
             }
-        }).fail(function(){
-            console.log('error')
+        }).fail(function(error){
+            console.log(error.responseText)
+            $('#loginError').text(error.responseText)
         })
     }
 
@@ -180,7 +181,7 @@ $( document ).ready(function() {
         let body = $(this).attr('data-body')
         $('#editPostModal').attr('data-id', id)
         //$('#editPostModal').attr('data-body', body)
-        $('#editPostModalBody').html(body)
+        $('#editPostModalBody').text(body)
         $('#editPostModal').modal('show')
     }
 
@@ -198,7 +199,6 @@ $( document ).ready(function() {
         $('#commentModal').attr('data-user_id', id)
         $('#commentModal').attr('data-post_id', data.target.attributes[0].value)
         $('#commentModal').modal('show')
-        $('#commentModalBody').focus()
     }
 
     // event handler for create comment modal SUBMIT button
@@ -235,7 +235,7 @@ $( document ).ready(function() {
     $('#editCommentModalSubmit').click(function(){
         let id = $('#editCommentModal').attr('data-id')
         let newComment = {
-            comment_content: $('#editCommentModalBody').val().trim(),
+            comment_content: $('#editCommentModalBody').val().trim()
         }
         $.ajax({
             url: '/api/comment/' + id,
@@ -420,7 +420,7 @@ $( document ).ready(function() {
 
                 // comment username and content
                 let commentDiv = $('<div>')
-                commentDiv.addClass('m-2 border py-2')
+                commentDiv.addClass('my-2 border py-2')
                 let usernameDiv = $('<div>')
                 usernameDiv.addClass('m-2 font-weight-bold')
                 let commentContentDiv = $('<div>')
@@ -432,7 +432,7 @@ $( document ).ready(function() {
                 // append comment to footer
                 usernameDiv.append(data[i].user.user_name);
                 commentDiv.append(usernameDiv);
-                commentContentDiv.append(data[i].comment_content)
+                commentContentDiv.text(data[i].comment_content)
                 commentDiv.append(commentContentDiv)
                 if (data[i].user_id === localStorage.getItem('user_id')){
                     usernameDiv.append(editCommentBtn)

@@ -11,7 +11,12 @@ module.exports = (app) => {
             user_id: req.params.user,
           },
           order: [["createdAt", "DESC"]],
-          include: db.users
+          include: [
+            {
+              model : db.users,
+              attributes: ['user_name']
+            }
+          ]
         })
         .then((posts) => {
           res.json(posts);
@@ -23,7 +28,12 @@ module.exports = (app) => {
       db.posts
         .findAll({
           order: [["createdAt", "DESC"]],
-          include: db.users
+          include: [
+            {
+              model : db.users,
+              attributes: ['user_name']
+            }
+          ]
         })
         .then((posts) => {
           res.json(posts);
@@ -119,7 +129,12 @@ module.exports = (app) => {
           post_id: req.params.post,
         },
         order: [["createdAt", "ASC"]],
-        include: db.users
+        include: [
+          {
+            model : db.users,
+            attributes: ['user_name']
+          }
+        ]
       })
       .then((comments) => {
         res.json(comments);

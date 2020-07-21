@@ -26,33 +26,6 @@
 
     <title>Droplet</title>
 
-    <style>
-        .modal-content {
-          background-color: #d7edf5;
-          position: relative;
-          /* border-radius: 50%; */
-          width: 90%;
-          /* height: 100vw; */
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          max-height: 450px;
-          outline: none;
-        }
-        #modal-content1 {
-          background-color: #d7edf5;
-          position: relative;
-          /* border-radius: 50%; */
-          width: 90%;
-          /* height: 100vw; */
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          max-height: 600px;
-          outline: none;
-        };        
-    </style>
-
 </head>
 
 <body>
@@ -72,7 +45,7 @@
                 <a class="nav-link" href="#">Log In  <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="createProfile.html">Create Profile</a>
+                <a class="nav-link" href= "/profile">My Profile</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -102,7 +75,7 @@
       <!-- Create Post/profile, Login/signout buttons go here-->
       <div class="col-3" id="buttonsCol">
 
-        <div class="row">
+        <div class="row m-2">
           <div class="col-sm-12 col-md-8 col-lg-6">
             <!-- contains create post button -->
             <div class="create-post-button-container" id="createPorfileOrPostDiv">
@@ -116,10 +89,6 @@
             </div>
           </div>
         </div>
-        
-
-        
-      
       </div> <!-- Closes #buttonsCol -->
 
       <!------------------------ Modals ----------------------->
@@ -130,33 +99,28 @@
           <div class="modal-content">
       
             <!-- Beginning of modal header -->
-            <div class="modal-header" style= "border: none;"> 
+            <div class="modal-header border-0"> 
               <div class="container">
-
                 <div class="row">
-                  <div class="col-md-12">
-                    <!-- Have to do in-line styling otherwise the "close" bootstrap class messes things up -->
-                    <button style= "margin-left: 375px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <div class="col-md-1 offset-11">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                 </div>
                 
                 <!-- Margin top here to put a bit of space between text and X -->
-                <div style= "margin-top: 10px;" class="row">
+                <div class="row mt-2">
                   <div class="col-12">
                     <h5 class="modal-title w-100 text-center" id="postModaltitle">Create Your Post Here!</h5>
                   </div>
                 </div>
-
-              </div>
-              
+              </div>              
             </div> 
             <!-- End of modal header -->
       
-            <!-- Beginning of modal body (Post form) -->
+            <!-- Beginning of post modal body -->
             <form class="container">
-
               <!-- Text area for post and image the user can upload -->
               <div class="modal-body">
 
@@ -165,8 +129,7 @@
                 </div>                 
 
                 <!-- Modal buttons for submit/cancel -->
-                <div class="modal-footer" style= "border: none;">
-
+                <div class="modal-footer border-0">
                   <div class="container text-center">
                     <div class="row text-center">
                       <div class="col-6">
@@ -235,7 +198,7 @@
         <div class="modal-body">
           <form>
 
-            <div class="form-row">
+            <div class="form-row mt-2">
               <div class="col">
                 <label for="signupModalFirstName">First Name</label>
                 <input type="text" class="form-control" id="signupModalFirstName" placeholder="First name" required>
@@ -246,10 +209,10 @@
               </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row mt-2">
               <div class="col-md-6"> 
                   <label for="birthday">Birthday</label>
-                  <input class= "rounded" style= "width: 100%; height: 55%; border: 1px solid #dbdfe4;" type="date" id="signupModalBirthday" name="birthday" required>
+                  <input class= "rounded pl-2" style= "width: 100%; height: 55%; border: 1px solid #dbdfe4;" type="date" id="signupModalBirthday" name="birthday" required>
               </div>
                 <div class="col">
                   <label for="inputEmail4">Email</label>
@@ -257,7 +220,7 @@
                 </div>
             </div>
 
-            <div class= "form-row">
+            <div class= "form-row mt-2">
               <div class="col">
                 <label for="recipient-name" class="col-form-label">Username</label>
                 <input type="text" class="form-control" id="signupModalUserName" required>
@@ -308,6 +271,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" id="loginModalBtn">Login</button>
+          <small id="loginError"></small>
         </div>
       </div>
     </div>
@@ -325,9 +289,9 @@
           <div class="container">
 
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-1 offset-11">
                 <!-- Have to do in-line styling otherwise the "close" bootstrap class messes things up -->
-                <button style= "margin-left: 375px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -356,7 +320,7 @@
             </div>
             
             <!-- Modal buttons for submit/cancel -->
-            <div class="modal-footer" style= "border: none;">
+            <div class="modal-footer border-0">
 
               <div class="container text-center">
                 <div class="row text-center">
@@ -410,19 +374,16 @@
       <div class="modal-content">
 
         <!-- Modal header -->
-        <div class="modal-header" style= "border: none;"> 
+        <div class="modal-header container border-0"> 
           <div class="container">
             <div class="row">
-              <div class="col-md-12">
-                <!-- Have to do in-line styling otherwise the "close" bootstrap class messes things up -->
-                <button style= "margin-left: 375px;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <div class="col-md-1 offset-11">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
             </div>
-            
-            <!-- Margin top here to put a bit of space between text and X -->
-            <div style= "margin-top: 10px;" class="row">
+            <div class="row">
               <div class="col-12">
                 <h5 class="modal-title w-100 text-center" id="confirmDeleteTitle">Confirm Deletion</h5>
               </div>
@@ -433,29 +394,24 @@
   
         <!-- Modal body -->
         <form class="container">
-
           <div class="modal-body">
-
-            <div class="form-group">
-              <h5>This action is permanent and can NOT be undone. Are you sure you want to delete this?</h5>
-            </div>                 
-
-            <!-- Modal buttons for submit/cancel -->
-            <div class="modal-footer" style= "border: none;">
-
-              <div class="container text-center">
-                <div class="row text-center">
-                  <div class="col-6">
-                    <button type="button" class="btn btn-info btn-block" data-dismiss="modal">Cancel</button>
-                  </div>
-                  <div class="col-6">
-                    <button type="button" class="btn btn-danger btn-block" id="confirmDeleteSubmit">Delete</button>
-                  </div>
-                </div>
-              </div>
-
-            </div> <!-- Close .modal-footer -->
+            <div class="row">
+              <div class="form-group col-8 offset-2">
+                <h5>This action is permanent and can NOT be undone. Are you sure you want to delete this?</h5>
+              </div>                 
+            </div>
           </div> <!-- Close .modal-body -->
+
+          <!-- Modal buttons for submit/cancel -->
+            <div class="row my-2">
+              <div class="col-6">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-danger" id="confirmDeleteSubmit">Delete</button>
+              </div>
+            </div>
+            
         </form>   
       </div> <!-- Close .modal-content-->
     </div> <!-- Close .modal-dialog -->

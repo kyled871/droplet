@@ -13,20 +13,48 @@ $(document).ready(function() {
             let bday = $('<div>').text(bdayFormat)
             $("#viewProfileContent").append(username, name, bio, bday)
 
-            console.log(data)
-        }) 
+        });
+
+        renderPosts()
         
     }
-
+    
     renderProfile()
-
-
+    
+    
     function renderPosts() {
         $.get('/api/posts/' + thisUser, function(data) {
+            
+            let postSection = $('<div>')
+            postSection.text('Posts: ')
+            postSection.attr('id', 'postSection')
+            $('#viewProfileContent').append(postSection)
+            postSection.append('<br>')
 
-            console.log(data)
+            for (i = 0; i < data.length; i++) {
+
+                let posts = $('<div>').text(data[i].post_content)
+                $('#postSection').append(posts)
+                renderComments(data[i].post_id)
+
+
+            }
+
         })
     }
 
+    function renderComments(postId) {
+        $.get('/api/comments/' + postId, function(data) {
+
+            for (i = 0; i < data.length; i++) {
+
+                let comments = $('<div>').text(data[i].comment_content)
+                $('#postSection').append(comments)
+
+            }
+            
+        })
+        
+    }
 
 });
