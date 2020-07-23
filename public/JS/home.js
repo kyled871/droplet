@@ -102,12 +102,29 @@ $( document ).ready(function() {
                 user_password: userSignupInfo.user_password,
                 user_name: userSignupInfo.user_name
                 })
+                
+                
+                
+            }
+            
+        }).then(function(data){
+            if (!data.errors){
                 $('#signupModal').modal('toggle')
                 renderButtons()
                 getPosts()
+              
+            } else {
+                data.errors.forEach(function(error) {
+                    console.log(error)
+
+                })
+                $('#signupError').text('Signup Failed')
+                $('.closeSignup').click(function(){
+                $('#signupError').text('')
+            })
             }
         }).fail(function(error){
-            $('#signupError').text(error.responseText)
+            $('#signupError').text('Signup Failed')
             $('.closeSignup').click(function(){
                 $('#signupError').text('')
 
@@ -391,14 +408,10 @@ $( document ).ready(function() {
         addComment.addClass('addComment btn btn-info my-2')
         addComment.text('Add Comment')
 
-        
-
         // gets comments and adds them to newDropletFooter
         getComments(post.post_id).then(function(data){
-            
+
             for (let i = 0; i < data.length; i++){
-                
-                
 
                 // Edit comments
                 let editCommentBtn = $('<button>')
@@ -428,7 +441,11 @@ $( document ).ready(function() {
                 deleteCommentBtn.attr('data-id', data[i].comment_id)
 
                 // append comment to footer
-                usernameDiv.append(data[i].user.user_name);
+                let usernameA = $('<a>')
+                usernameA.attr('href', '/profile/' + data[i].user_id)
+                usernameA.append(data[i].user.user_name)
+                usernameDiv.append(usernameA);
+
                 commentDiv.append(usernameDiv);
                 commentContentDiv.text(data[i].comment_content)
                 commentDiv.append(commentContentDiv)
@@ -440,6 +457,18 @@ $( document ).ready(function() {
                 }
                 
                 newDropletFooter.append(commentDiv)
+
+                // display time and date somewhere in small text
+                let newCommentDateTime = $('<small>');
+
+                // gets date/time from post data
+                let commentDate = new Date(data[i].createdAt);
+
+                // format createdDate with moment
+                let formattedCommentDate = dayjs(commentDate).format("MMM D, YYYY h:mm A");
+
+                newCommentDateTime.html('<br>' + formattedCommentDate);
+                commentContentDiv.append(newCommentDateTime)
 
             }
 

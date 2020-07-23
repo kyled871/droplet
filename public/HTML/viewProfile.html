@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
@@ -26,19 +29,104 @@
     <title>View Profile</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/"> <!-- logo image goes here <img src="" width="30" height="30"
+            class="d-inline-block align-top" alt="">-->
+            droplet</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" id="editProfileLinkContainer">
+                  <!-- <a class="nav-link" href= "#" >Edit Profile</a> -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Games  <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+      </nav>
 
     <div class="container">
         <div class="row">
-            <div class="col-6 offeset-3">
-                <div id="viewProfileContent">
+            <div class="offset-3 col-6">
+                <div id="viewProfileContent" class="card">
                     
+                </div>
+            </div>
+        </div>
+        <div class= "row">
+            <div class="offset-3 col-6">
+                <div id= "viewPostContent" class="card">
+
                 </div>
             </div>
         </div>
     </div>
     
+    <!-- Modals -->
+    <!----- Signup modal ----->
+  <div class="modal fade" id="signupModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" id= 'modal-content1'>
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalLabel">Your Info for Sale</h5>
+          <button type="button" class="close closeSignup" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
 
+            <div class="form-row mt-2">
+              <div class="col">
+                <label for="signupModalFirstName">First Name</label>
+                <input type="text" class="form-control" id="signupModalFirstName" placeholder="First name" required>
+              </div>
+              <div class="col">
+                <label for="signupModalLastName">Last Name</label>
+                <input type="text" class="form-control" id="signupModalLastName" placeholder="Last name" required>
+              </div>
+            </div>
+
+            <div class="form-row mt-2">
+              <div class="col-md-6"> 
+                  <label for="birthday">Birthday</label>
+                  <input class= "rounded pl-2 form-control" style= "width: 100%; height: 55%; border: 1px solid #dbdfe4;" type="date" id="signupModalBirthday" name="birthday" data-placeholder="Date of birth" required aria-required="true">
+              </div>
+                <div class="col">
+                  <label for="inputEmail4">Email</label>
+                  <input type="email" class="form-control" id="signupModalEmail" placeholder="Email" required>
+                </div>
+            </div>
+
+            <div class= "form-row mt-2">
+              <div class="col">
+                <label for="recipient-name" class="col-form-label">Username</label>
+                <input type="text" class="form-control" id="signupModalUserName" placeholder= "Username" required>
+              </div>
+              <div class="col">
+                
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Tell Us About Yo'Self: </label>
+              <textarea style= "resize: none;" type="text" class="form-control" id="signupModalBio" placeholder= "Come here often?" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <small class="text-danger font-weight-bold" id="signupError"></small>
+          <button type="button" class="btn btn-secondary closeSignup" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="signupModalSubmit">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 </body>
