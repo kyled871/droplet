@@ -47,45 +47,40 @@
               <a class="nav-link" href= "/profile">My Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">Games  <span class="sr-only">(current)</span></a>
+                <!-- <a class="nav-link" href="/">Games  <span class="sr-only">(current)</span></a> -->
             </li>
         </ul>
     </div>
   </nav>
     
-  <div class="container pt-3">
+  <div class="container-fluid pt-3">
     
     <div class="row">
-      <!-- Taskbar -->
-      <div class="col-3 task-bar">
-        <!-- Taskbar content goes here -->
-      </div>
-
+      
       <!-- Posts -->
-      <div class="col-6" id="postsCol">
-          <div id="posts">
-              <!-- Each post will be appended here using jQuery from home.js -->
-          </div>
+      <div class="col-12 col-md-8 col-lg-6 offset-lg-2 order-md-0 order-sm-1 order-1 my-4" id="postsCol">
+        <div id="posts">
+          <!-- Each post will be appended here using jQuery from home.js -->
+        </div>
       </div> <!-- Closes #postsCol -->
-
+      
       <!-- Create Post/profile, Login/signout buttons go here-->
-      <div class="col-3" id="buttonsCol">
+      <div class="col-12 col-sm-12 col-md-4 col-lg-4 row mt-4 order-md-1 order-sm-0 order-0 mx-auto" id="buttonsCol">
 
-        <div class="row my-4 mx-2">
-          <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-            <!-- contains create post button -->
-            <div class="create-post-button-container" id="createPorfileOrPostDiv">
-              <!-- create profile or create post button will go here -->
-            </div>
+        <div class="col-6">
+          <!-- contains create post button -->
+          <div class="create-post-button-container" id="createPorfileOrPostDiv">
+            <!-- create profile or create post button will go here -->
           </div>
-          <div class="col-sm-12 col-md-8 col-lg-6">
-            <!-- container to hold login or signout button dynamically added with jquery -->
-            <div class="login-signout-button-container" id="loginOrLogoutDiv">
-              <!-- login or signout button appears here from jQuery -->
-            </div>
+        </div>
+        <div class="col-6">
+          <!-- container to hold login or signout button dynamically added with jquery -->
+          <div class="login-signout-button-container" id="loginOrLogoutDiv">
+            <!-- login or signout button appears here from jQuery -->
           </div>
         </div>
       </div> <!-- Closes #buttonsCol -->
+      
     </div> <!-- Closes .row -->
   </div> <!-- Closes .container -->
 

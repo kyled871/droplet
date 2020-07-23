@@ -373,7 +373,7 @@ $( document ).ready(function() {
         let newPostDroplet = $('<div>');
         
         // bootstrap classes go here for styling the whole droplet
-        newPostDroplet.addClass('card my-4');
+        newPostDroplet.addClass('card mb-4');
 
         let newDropletCardBody = $('<div>')
         newDropletCardBody.addClass('card-body')
