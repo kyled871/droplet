@@ -12,4 +12,11 @@ module.exports = (app) => {
         res.sendFile(path.join(__dirname, "../public/HTML/viewProfile.html"))
     });
 
+    // view games page ------
+    app.get('/games', (req, res) => {
+        res.sendFile(path.join(__dirname, "../public/HTML/games.html"))
+    });
+
+
+
 }

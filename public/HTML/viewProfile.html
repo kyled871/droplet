@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/images/droplet_favicon.ico" />
+    <link rel="shortcut icon" href="/images/droplet_favicon.ico"/>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -28,7 +28,7 @@
 
     <title>View Profile</title>
 </head>
-<body>
+<body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/"><img src="../images/droplet.png" width="30" height="30"
             class="d-inline-block align-top" alt="droplet favicon">
@@ -44,7 +44,7 @@
                   <!-- <a class="nav-link" href= "#" >Edit Profile</a> -->
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Games  <span class="sr-only">(current)</span></a>
+                    <!-- <a class="nav-link" href="/">Games  <span class="sr-only">(current)</span></a> -->
                 </li>
             </ul>
         </div>
@@ -52,16 +52,16 @@
 
     <div class="container">
         <div class="row">
-            <div class="offset-3 col-6">
+            <div class="col-sm-8 offset-sm-2 offset-md-3 col-md-6 col-lg-4 offset-lg-4 col-10 offset-1">
                 <div id="viewProfileContent" class="card">
-                    
+                    <!-- profile content goes here -->
                 </div>
             </div>
         </div>
         <div class= "row">
-            <div class="offset-3 col-6">
+            <div class="col-sm-8 offset-sm-2 offset-md-3 col-md-6 col-lg-4 offset-lg-4 col-10 offset-1">
                 <div id= "viewPostContent" class="card">
-
+                  <!-- postContent goes here -->
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
             <div class="form-row mt-2">
               <div class="col">
                 <label for="signupModalFirstName">First Name</label>
-                <input type="text" class="form-control" id="signupModalFirstName" placeholder="First name" required>
+                <input type="text" class="form-control" id="signupModalFirstName" placeholder="First name" required data-modalfocus>
               </div>
               <div class="col">
                 <label for="signupModalLastName">Last Name</label>

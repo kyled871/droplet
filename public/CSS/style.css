@@ -1,6 +1,7 @@
 body {
     height: 100%;
     min-width: 100%;
+    background-image: url('../images/droplet-background.jpg');
 }
 .container {
     /* border: 3px solid blue; */
@@ -29,4 +30,8 @@ input[type="date"]:valid::before { display: none }
 
 input[type="date"]:focus {
     border-color: #9ecdff !important;
+}
+
+a.aStyle {
+    color: white;
 }

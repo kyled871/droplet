@@ -35,6 +35,8 @@ $(document).ready(function() {
     // Function to render edit link
     function renderEditProfileLink(){
         $('#editProfileLinkContainer').append(editProfileLink)
+    
+
     }
     // Event handler for edit profile link
     $(document).on('click','#editProfileLink',function(){
@@ -47,7 +49,9 @@ $(document).ready(function() {
         $('#signupModalUserName').val(userNameInput)
         $('#signupModalBio').val(bioInput)
         $('#signupModal').modal('show')
-
+        $(".modal").on('shown.bs.modal', function () {
+            $("[data-modalfocus]", this).focus();
+        });
         
     })
     
@@ -82,6 +86,7 @@ $(document).ready(function() {
         $('#viewProfileContent').empty()
         $.get('/api/user/' + chosenUser, function(data) {
 
+            console.log(data)
             firstName = data.user_firstName;
             lastName = data.user_lastName;
             birthdayDate = data.user_birthday;
@@ -138,6 +143,7 @@ $(document).ready(function() {
             groupItems.append(bio)
 
             profileContent.append(cardHeader, bday, bio);
+
             renderPosts();
 
         });
@@ -151,14 +157,15 @@ $(document).ready(function() {
 
         $.get('/api/posts/' + chosenUser, function(data) {
 
+
             let postSection = $('<div>');
             postSection.addClass('card-header text-center text-white bg-dark');
             let postSectionH = $('<h2>').text('Posts: ');
             postSectionH.addClass('mb-3');
             postSection.append(postSectionH);
+            console.log(data)
 
             for (i = 0; i < data.length; i++) {
-                console.log(data)
 
                 let posts = $('<div>');
                 let postsP = $('<li>').text(data[i].post_content);
@@ -183,8 +190,11 @@ $(document).ready(function() {
                 $(postSection).append(posts);
                 
             }
-            
-            $('#viewPostContent').append(postSection);
+            if (data.length){
+                $('#viewPostContent').append(postSection);
+            } else {
+                $('#viewPostContent').hide()
+            }
 
         })
         

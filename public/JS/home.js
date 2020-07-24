@@ -60,6 +60,7 @@ $( document ).ready(function() {
         localStorage.clear()
         renderButtons()
         getPosts()
+        showMyProfile()
     })
     // Loads button to page depending on whether user is sign in or not
     function renderButtons(){
@@ -101,10 +102,7 @@ $( document ).ready(function() {
                 storeUser({
                 user_password: userSignupInfo.user_password,
                 user_name: userSignupInfo.user_name
-                })
-                
-                
-                
+                })                   
             }
             
         }).then(function(data){
@@ -151,9 +149,34 @@ $( document ).ready(function() {
         })
     }
 
+    function showMyProfile() {
+        if (localStorage.getItem('user_id')) {
+            $('#myProfileLink').show()
+
+        } else {
+            $('#myProfileLink').hide()
+        }
+    }
+    showMyProfile()
+
     // End Log in --------------------------------------------
 
     // Create/edit post ---------------------------------------
+
+    // $('#postModal').on('toggle', function () {
+    //     console.log('show')
+    //     $('#postModalBody').focus();
+    // })
+
+    // $('#postModalBody').focus(function() {
+        
+    // })
+
+    // this will autofocus the first textarea in the modals when a user
+    // clicks on them
+    $(".modal").on('shown.bs.modal', function () {
+        $("[data-modalfocus]", this).focus();
+    });
 
     // event handler for CREATE post button
     $('#createPostButton').on('click', createPost)
@@ -377,7 +400,6 @@ $( document ).ready(function() {
 
         let newDropletCardBody = $('<div>')
         newDropletCardBody.addClass('card-body')
-        newDropletCardBody.css('width: 18rem;')
         
         // div contains the top section of the droplet
         let newDropletHeader = $('<div>');
@@ -388,18 +410,20 @@ $( document ).ready(function() {
         // div contains the body/middle section of the droplet
         let newDropletBody = $('<div>');
 
+        let postContentH = $('<h4>')
+        postContentH.text(post.post_content)
         // content of the post
-        newDropletBody.text(post.post_content);
+        newDropletBody.append(postContentH);
         
         // bootstrap classes go here to style the body/middle section of the droplet
-        newDropletBody.addClass('card-text');
+        newDropletBody.addClass('card-text border-bottom border-left p-2');
         
         // div contains the bottom section of the droplet
         let newDropletFooter = $('<div>');
         
         // bootstrap classes go here to style the bottom section of the droplet
-        newDropletFooter.addClass('card-body mt-2');
-        newDropletFooter.css('border-top', '1px solid black')
+        newDropletFooter.addClass('card-body');
+        // newDropletFooter.css('border-top', '1px solid black')
 
         // Add comment button, only shows up if logged in       
         let addComment = $('<button>')
@@ -431,7 +455,7 @@ $( document ).ready(function() {
 
                 // comment username and content
                 let commentDiv = $('<div>')
-                commentDiv.addClass('my-2 border py-2')
+                commentDiv.addClass('my-2 border')
                 let usernameDiv = $('<div>')
                 usernameDiv.addClass('m-2 font-weight-bold')
                 let commentContentDiv = $('<div>')
@@ -458,6 +482,7 @@ $( document ).ready(function() {
                 
                 newDropletFooter.append(commentDiv)
 
+                // This shows the date and time that a comment was made
                 // display time and date somewhere in small text
                 let newCommentDateTime = $('<small>');
 
@@ -506,7 +531,7 @@ $( document ).ready(function() {
             // format createdDate with moment
             createdDate = dayjs(createdDate).format("MMM D, YYYY h:mm A");
             
-            newDropletDateTime.html('<br>' + createdDate);
+            newDropletDateTime.html(createdDate);
 
 
             function appendAll(){
