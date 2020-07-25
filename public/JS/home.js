@@ -9,6 +9,8 @@ $( document ).ready(function() {
 
     // Log in --------------------------------------------
 
+    // Buttons dynamically rendered depending on user state
+    
     function renderLoginButton(){
         $('#loginOrLogoutDiv').empty()
         let loginBtn = $('<button>')
@@ -48,6 +50,8 @@ $( document ).ready(function() {
         createPostBtn.text('Create Post')
         $('#createPorfileOrPostDiv').append(createPostBtn)
     }
+    
+    // Handlers for dynamically loaded buttons 
 
     $(document).on('click', '#loginBtn', function(){
         $('#loginModal').modal('show')
@@ -62,6 +66,7 @@ $( document ).ready(function() {
         getPosts()
         showMyProfile()
     })
+
     // Loads button to page depending on whether user is sign in or not
     function renderButtons(){
         if (!localStorage.getItem('user_id')){
@@ -71,7 +76,6 @@ $( document ).ready(function() {
         } else {
             renderCreatePostButton()
             renderLogoutButton()
-            
         }
     }
 
@@ -83,7 +87,6 @@ $( document ).ready(function() {
             user_password: $('#loginModalPassword').val().trim()
         }
         storeUser(userLoginInfo)
-
     })
 
     $('#signupModalSubmit').click(function(){
@@ -102,7 +105,7 @@ $( document ).ready(function() {
                 storeUser({
                 user_password: userSignupInfo.user_password,
                 user_name: userSignupInfo.user_name
-                })                   
+                })                  
             }
             
         }).then(function(data){
@@ -110,22 +113,39 @@ $( document ).ready(function() {
                 $('#signupModal').modal('toggle')
                 renderButtons()
                 getPosts()
-              
             } else {
                 data.errors.forEach(function(error) {
-                    console.log(error)
+                    switch (error.path){
+                        case 'user_firstName':
+                            $('#signupError').text('Invalid First Name')
+                        break;
+                        
+                        case 'user_lastName':
+                            $('#signupError').text('Invalid Last Name')
+                        break;
 
+                        case 'user_birthday':
+                            $('#signupError').text('Invalid Birthday')
+                        break;
+                        
+                        case 'user_password':
+                            $('#signupError').text('Invalid Password')
+                        break;
+                        
+                        case 'user_email':
+                            $('#signupError').text('Invalid Email')
+                        break;                            
+
+                        case 'user_name':
+                            $('#signupError').text('Invalid Username')
+                        break;
+                    }
                 })
-                $('#signupError').text('Signup Failed')
-                $('.closeSignup').click(function(){
-                $('#signupError').text('')
-            })
             }
         }).fail(function(error){
-            $('#signupError').text('Signup Failed')
+            $('#signupError').text('Invalid Password')
             $('.closeSignup').click(function(){
                 $('#signupError').text('')
-
             })
         })
     })
@@ -139,16 +159,16 @@ $( document ).ready(function() {
             if (data) {
                 localStorage.setItem('user_id', data.user_id)
                 location.reload()
-            }
+            } 
         }).fail(function(error){
             $('#loginError').text(error.responseText)
             $('.closeLogin').click(function(){
                 $('#loginError').text('')
-
             })
         })
     }
-
+    
+    // allow logged in user to see "show profile" link on navbar
     function showMyProfile() {
         if (localStorage.getItem('user_id')) {
             $('#myProfileLink').show()
@@ -157,9 +177,10 @@ $( document ).ready(function() {
             $('#myProfileLink').hide()
         }
     }
+    
     showMyProfile()
 
-    // End Log in --------------------------------------------
+    // End Log in ---------------------------------------------
 
     // Create/edit post ---------------------------------------
 
@@ -222,7 +243,6 @@ $( document ).ready(function() {
         $('#editPostModalBody').text(body)
         $('#editPostModal').modal('show')
     }
-
 
     // End Create/edit post ------------------------------------------
 
@@ -307,8 +327,7 @@ $( document ).ready(function() {
                 getPosts()
             })
         })
-        
-    } // Still needs confirm modal triggered, ajax goes inside confirm modal submit button even handler
+    }
     
     $(document).on('click', 'button.deleteComment', deleteComment);
 
@@ -326,7 +345,7 @@ $( document ).ready(function() {
                 getPosts()
             })
         })
-    } // Still needs confirm modal triggered, ajax goes inside confirm modal submit button even handler
+    }
 
     // End delete post/comment/user --------------------------------------
 
@@ -369,7 +388,6 @@ $( document ).ready(function() {
     // Retrieve comments from database related to single post_id specified
     function getComments(postId){ 
         return $.get('/api/comments/' + postId, function(data){
-
             for (let i = 0; i < data.length; i++){
                 allComments.push(data[i])
             }
@@ -380,38 +398,26 @@ $( document ).ready(function() {
     // create the rows to populate postsContainer
     function createNewRow(post){
 
-        // div contains the whole post droplet
+        // div contains the whole post droplet plus bootstrap classes
         let newPostDroplet = $('<div>');
-        
-        // bootstrap classes go here for styling the whole droplet
         newPostDroplet.addClass('card mb-4');
-
         let newDropletCardBody = $('<div>')
         newDropletCardBody.addClass('card-body')
         
-        // div contains the top section of the droplet
+        // div contains the top section of the droplet plus bootstrap classes
         let newDropletHeader = $('<div>');
-        
-        // bootstrap classes go here to style the top section of the droplet
         newDropletHeader.addClass('card-title row');
         
-        // div contains the body/middle section of the droplet
+        // div contains the body/middle section of the droplet plus classes
         let newDropletBody = $('<div>');
-
         let postContentH = $('<h4>')
         postContentH.text(post.post_content)
-        // content of the post
         newDropletBody.append(postContentH);
-        
-        // bootstrap classes go here to style the body/middle section of the droplet
         newDropletBody.addClass('card-text border-bottom border-left p-2');
         
-        // div contains the bottom section of the droplet
+        // div contains the bottom section of the droplet plus classes
         let newDropletFooter = $('<div>');
-        
-        // bootstrap classes go here to style the bottom section of the droplet
         newDropletFooter.addClass('card-body');
-        // newDropletFooter.css('border-top', '1px solid black')
 
         // Add comment button, only shows up if logged in       
         let addComment = $('<button>')
@@ -422,9 +428,7 @@ $( document ).ready(function() {
 
         // gets comments and adds them to newDropletFooter
         getComments(post.post_id).then(function(data){
-
             for (let i = 0; i < data.length; i++){
-
                 // Edit comments
                 let editCommentBtn = $('<button>')
                 editCommentBtn.attr('data-post_id', post.post_id)
@@ -457,7 +461,6 @@ $( document ).ready(function() {
                 usernameA.attr('href', '/profile/' + data[i].user_id)
                 usernameA.append(data[i].user.user_name)
                 usernameDiv.append(usernameA);
-
                 commentDiv.append(usernameDiv);
                 commentContentDiv.text(data[i].comment_content)
                 commentDiv.append(commentContentDiv)
@@ -470,19 +473,12 @@ $( document ).ready(function() {
                 
                 newDropletFooter.append(commentDiv)
 
-                // This shows the date and time that a comment was made
-                // display time and date somewhere in small text
+                // date and time that a comment was made
                 let newCommentDateTime = $('<small>');
-
-                // gets date/time from post data
                 let commentDate = new Date(data[i].createdAt);
-
-                // format createdDate with moment
                 let formattedCommentDate = dayjs(commentDate).format("MMM D, YYYY h:mm A");
-
                 newCommentDateTime.html('<br>' + formattedCommentDate);
                 commentContentDiv.append(newCommentDateTime)
-
             }
 
             // only the user can edit the post
@@ -512,7 +508,6 @@ $( document ).ready(function() {
             
             // display time and date somewhere in small text
             let newDropletDateTime = $('<small>');
-
             // gets date/time from post data
             let createdDate = new Date(post.createdAt);
 

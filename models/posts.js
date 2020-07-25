@@ -15,9 +15,6 @@ module.exports = function (sequelize, DataTypes) {
       post_content: {
         type: DataTypes.TEXT,
       },
-      /*date_time: {
-        type: DataTypes.TIME,
-      },*/
     },
     {
       freezeTableName: true,

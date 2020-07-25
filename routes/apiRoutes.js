@@ -205,7 +205,7 @@ module.exports = (app) => {
           res.send(err);
         });
     } else {
-      res.status(400).send("Invalid Password");
+      res.status(400).send("Sign Up Failed!");
     }
   });
 
@@ -221,7 +221,7 @@ module.exports = (app) => {
       })
       .then(function (user) {
         if (!user /*|| userInput != user.dataValues.user_name.toLowerCase()*/) {
-          res.status(400).send("Invalid Login!");
+          res.status(400).send("Invalid Username or Password!");
         } else {
           bcrypt.compare(
             req.body.user_password,
@@ -230,7 +230,7 @@ module.exports = (app) => {
               if (result) {
                 res.send(user.dataValues);
               } else {
-                res.status(400).send("Invalid Login!");
+                res.status(400).send("Invalid Username or Password!");
               }
             }
           );

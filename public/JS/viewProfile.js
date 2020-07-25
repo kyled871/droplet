@@ -13,13 +13,21 @@ $(document).ready(function() {
     editProfileLink.attr('id', 'editProfileLink')
     editProfileLink.text('Edit Profile')
 
+    // Global variables for delete profile link
+    let deleteProfileLink = $('<a>').addClass('nav-link')
+    deleteProfileLink.attr('href', '#')
+    deleteProfileLink.attr('id', 'deleteProfileLink')
+    deleteProfileLink.text('Delete Profile')
+
     let chosenUser;
     let pathArr = window.location.pathname.split('/');
-    console.log(pathArr[pathArr.length - 1])
+    // console.log(pathArr[pathArr.length - 1])
 
     if (pathArr[pathArr.length - 1] === 'profile' || pathArr[pathArr.length - 1] === localStorage.getItem('user_id')){
         chosenUser = localStorage.getItem('user_id');
         renderEditProfileLink();
+        renderDeleteProfileLink()
+
     } else {
         chosenUser = pathArr[pathArr.length - 1]
     }
@@ -35,9 +43,8 @@ $(document).ready(function() {
     // Function to render edit link
     function renderEditProfileLink(){
         $('#editProfileLinkContainer').append(editProfileLink)
-    
-
     }
+    
     // Event handler for edit profile link
     $(document).on('click','#editProfileLink',function(){
 
@@ -54,6 +61,34 @@ $(document).ready(function() {
         });
         
     })
+
+    // Function to render delete profile link
+    function renderDeleteProfileLink(){
+        $('#deleteProfileLinkContainer').append(deleteProfileLink)
+    }
+    
+    // function handles DELETE user process
+    function deleteUser(){
+        console.log(localStorage.getItem('user_id'))
+        $('#confirmDeleteModal').modal('show')
+        $('#confirmDeleteSubmit').click(function(){
+            $.ajax({
+                method: 'DELETE',
+                url: '/api/user/' + localStorage.getItem('user_id')
+            }).then(function(){
+                $('#confirmDeleteModal').modal('toggle')
+                localStorage.clear()
+                window.location.replace("/")
+            })
+        })
+    }
+
+    $(document).on('click', '#deleteProfileLink', function() {
+
+        deleteUser()
+        
+    });
+
     
     $('#signupModalSubmit').click(function(){
         let updatedInfo = {
@@ -86,7 +121,6 @@ $(document).ready(function() {
         $('#viewProfileContent').empty()
         $.get('/api/user/' + chosenUser, function(data) {
 
-            console.log(data)
             firstName = data.user_firstName;
             lastName = data.user_lastName;
             birthdayDate = data.user_birthday;
@@ -163,7 +197,6 @@ $(document).ready(function() {
             let postSectionH = $('<h2>').text('Posts: ');
             postSectionH.addClass('mb-3');
             postSection.append(postSectionH);
-            console.log(data)
 
             for (i = 0; i < data.length; i++) {
 

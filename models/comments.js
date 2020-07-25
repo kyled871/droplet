@@ -14,9 +14,6 @@ module.exports = function (sequelize, DataTypes) {
       comment_content: {
         type: DataTypes.TEXT,
       },
-      /*date_time: {
-        type: DataTypes.TIME,
-      },*/
     },
     {
       freezeTableName: true,
@@ -33,6 +30,7 @@ module.exports = function (sequelize, DataTypes) {
       foreignKey: { name: "user_id" },
       onDelete: "cascade",
     })
+
   };
 
   return Comments;

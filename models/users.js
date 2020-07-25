@@ -20,6 +20,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
         validate: {
           len: [2, 20],
+
         },
       },
 
@@ -28,7 +29,9 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
         validate: {
           len: [2, 20],
+
         },
+
       },
 
       user_name: {
@@ -85,12 +88,15 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
+  // Allows us to delete user as well as their comments and posts they've made
   Users.associate = function (models) {
     Users.hasMany(models.comments, {
       foreignKey: { name: "user_id" },
+      onDelete: "cascade"
     });
     Users.hasMany(models.posts, {
       foreignKey: { name: "user_id" },
+      onDelete: "cascade"
     });
   };
 

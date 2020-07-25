@@ -43,6 +43,9 @@
                 <li class="nav-item" id="editProfileLinkContainer">
                   <!-- <a class="nav-link" href= "#" >Edit Profile</a> -->
                 </li>
+                <li class="nav-item" id="deleteProfileLinkContainer">
+                  <!-- <a class="nav-link" href= "#" >Delete Profile</a> -->
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/games">Games  <span class="sr-only">()</span></a>
                 </li>
@@ -127,6 +130,55 @@
       </div>
     </div>
   </div>
+
+  <!---------- Confirm Delete Modal --------->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+        <!-- Modal header -->
+        <div class="modal-header container border-0"> 
+          <div class="container">
+            <div class="row">
+              <div class="col-md-1 offset-11">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <h5 class="modal-title w-100 text-center" id="confirmDeleteTitle">Confirm Deletion</h5>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <!-- End of modal header -->
+  
+        <!-- Modal body -->
+        <div class="modal-body border text-center text-danger font-weight-bold">
+          <div class="row">
+            <div class="form-group col-8 offset-2">
+              <h4>Warning</h4>
+              <h5>This action is permanent and can NOT be undone. Are you sure you want to delete this?</h5>
+            </div>                 
+          </div>
+        </div> <!-- Close .modal-body -->
+
+        <!-- Modal buttons for submit/cancel -->
+        <div class="row my-4 mx-auto">
+          <div class="col-6">
+            <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-danger" id="confirmDeleteSubmit">Delete</button>
+          </div>
+        </div>
+      </div> <!-- Close .modal-content-->
+    </div> <!-- Close .modal-dialog -->
+  </div> <!-- Close #confirmDeleteModal -->
+
+  <!-- End confirm Delete Modal -->
 
 
 </body>
