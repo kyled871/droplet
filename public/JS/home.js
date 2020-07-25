@@ -163,15 +163,6 @@ $( document ).ready(function() {
 
     // Create/edit post ---------------------------------------
 
-    // $('#postModal').on('toggle', function () {
-    //     console.log('show')
-    //     $('#postModalBody').focus();
-    // })
-
-    // $('#postModalBody').focus(function() {
-        
-    // })
-
     // this will autofocus the first textarea in the modals when a user
     // clicks on them
     $(".modal").on('shown.bs.modal', function () {
@@ -289,7 +280,6 @@ $( document ).ready(function() {
             type: 'PUT',
             data: newComment,
             success: function(result) {
-                console.log(result)
                 $('#editCommentModal').modal('toggle')
                 getPosts(); 
             }
@@ -337,8 +327,6 @@ $( document ).ready(function() {
             })
         })
     } // Still needs confirm modal triggered, ajax goes inside confirm modal submit button even handler
-
-
 
     // End delete post/comment/user --------------------------------------
 
